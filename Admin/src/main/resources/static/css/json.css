@@ -1,0 +1,188 @@
+@media screen and (max-width: 760px) {
+   .hide{
+   	display: none!important;
+   	z-index: 9999!important;
+   }
+   .Provincial_urban_areas{
+   	position: fixed;
+   	bottom: 0;
+   	left: 0;
+   	width: 100%;
+   	height: 100%;
+   	z-index: 10000;
+   }
+   .Provincial_urban_areas1{
+   	position: absolute;
+   	top: 0;
+   	left: 0;
+   	width: 100%;
+   	height: 100%;
+   	z-index: 1;
+   	background-color: rgba(0,0,0,0.6);
+   }
+   .Provincial_urban_areas2{
+   	position: absolute;
+   	bottom: 0;
+   	left: 0;
+   	width: 100%;
+   	z-index: 2;
+   	background-color: #fff;
+   	transform: translateY(150%);
+   	transition: all 0.4s ease;
+   }
+   .Provincial_urban_areas2_tr{
+   	transform: translateY(0%)!important;
+   }
+   .betterHome{
+   	display: flex;
+   }
+   .betterHeader{
+   	height: 6rem;
+   	background-color: #fff;
+   	position: relative;
+   	width: 100%;
+   }
+   .betterHeader1 {
+   	position: absolute;
+   	top: 0;
+   	width: 100%;
+   	z-index: 2;
+   	height: 100%;
+   	overflow: hidden;
+   	padding-top: 2rem;
+   }
+   .betterHeader1 .wheel-scroll .wheel-item{
+   	text-align: center;
+   	height: 1rem;
+   	display: flex;
+   	align-items: center;
+   	justify-content: center;
+   	font-size:0.24rem;
+   }
+   .li_color{
+   	color: #fff!important;
+   }
+   .li_position{
+   	position: absolute;
+   	top: 1.97rem;
+   	width: 100%;
+   	z-index: 0;
+   	height: 1rem;
+   	background-color: #29A7FA;
+   }
+   
+   .Provincial_urban_areas2_xuanze{
+   	display: flex;
+   	align-items: center;
+   	justify-content: space-between;
+   	padding: 0.1rem 0.3rem 0.2rem 0.3rem;
+   	border-bottom: 1px solid rgba(241,241,241,0.8);
+   }
+   .Provincial_urban_areas2_xuanze span{
+   	cursor: pointer;
+   	display: block;
+   	color: #fff;
+   	padding: 0.1rem 0.3rem;
+   	border-radius: 0.1rem;
+   	background-color: rgba(200,200,200,0.8);
+   	font-size: 0.28rem;
+   }
+   .Provincial_urban_areas2_xuanze span:last-child{
+   	background-color: #29A7FA;
+   }
+}
+
+
+@media screen and (min-width:760px) {
+	.hide{
+		display: none!important;
+		z-index: 9999!important;
+	}
+	.Provincial_urban_areas{
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 10000;
+	}
+	.Provincial_urban_areas1{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+		background-color: rgba(0,0,0,0.6);
+	}
+	.Provincial_urban_areas2{
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		z-index: 2;
+		background-color: #fff;
+		transform: translateY(150%);
+		transition: all 0.4s ease;
+	}
+	.Provincial_urban_areas2_tr{
+		transform: translateY(0%)!important;
+	}
+	.betterHome{
+		display: flex;
+	}
+	.betterHeader{
+		height: 4rem;
+		background-color: #fff;
+		position: relative;
+		width: 100%;
+	}
+	.betterHeader1 {
+		position: absolute;
+		top: 0;
+		width: 100%;
+		z-index: 2;
+		height: 100%;
+		overflow: hidden;
+		padding-top: 1.95rem;
+	}
+	.betterHeader1 .wheel-scroll .wheel-item{
+		text-align: center;
+		height: 0.5rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size:0.14rem;
+	}
+	.li_color{
+		color: #fff!important;
+	}
+	.li_position{
+		position: absolute;
+		top: 1.97rem;
+		width: 100%;
+		z-index: 0;
+		height: 0.5rem;
+		background-color: #29A7FA;
+	}
+	
+	.Provincial_urban_areas2_xuanze{
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0.1rem 0.2rem;
+		border-bottom: 1px solid rgba(241,241,241,0.8);
+	}
+	.Provincial_urban_areas2_xuanze span{
+		cursor: pointer;
+		display: block;
+		color: #fff;
+		padding: 0.05rem 0.24rem;
+		border-radius: 0.1rem;
+		background-color: rgba(200,200,200,0.8);
+		font-size: 0.14rem;
+	}
+	.Provincial_urban_areas2_xuanze span:last-child{
+		background-color: #29A7FA;
+	}
+}

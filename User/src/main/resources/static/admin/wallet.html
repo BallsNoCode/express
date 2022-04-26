@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>钱包 -- 快件e栈服务平台</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+
+    <link rel="stylesheet" href="../js/layer/theme/default/layer.css">
+    <link rel="stylesheet" href="../css/view.css"/>
+    <link href="../css/normalize.css" type="text/css" rel="stylesheet"/>
+    <link href="../css/common.css" type="text/css" rel="stylesheet"/>
+    <script src="../js/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="../js/common.js" type="text/javascript"></script>
+    <script src="../js/notice.js" type="text/javascript"></script>
+    <script src="../js/regexp.js" type="text/javascript"></script>
+    <script src="../js/layer/layer.js"></script>
+    <style type="text/css">
+        .content {
+            position: relative;
+        }
+
+        .expEnterCont {
+            padding-bottom: 20px;
+        }
+
+        .expEnterCont .expEnterIcon {
+            width: 20%;
+            margin: 0 auto;
+        }
+
+        .expEnterCont .expEnterIcon p {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .submitBtn {
+            width: 90%;
+            margin: 0 auto;
+            text-align: center;
+            line-height: 46px;
+            border-radius: 23px;
+            background: #ade8b6;
+            color: #fff;
+            font-weight: bolder;
+        }
+
+        .stopvoicerecord  {
+            width: 60%;
+            background: #fff;
+            border-radius: 8px;
+            position: absolute;
+            top: calc((100% - 216px) / 2);
+            /*30 + 110 +30 + 10 +36 == 216*/
+            left: 20%;
+            padding: 20px 0px 10px;
+        }
+
+        .stopvoicerecord .voiceRecordCont img {
+            display: block;
+            margin: 0 auto;
+            width: 110px;
+        }
+
+        .stopvoicerecord .voiceRecordCont .voiceRecordState {
+            margin: 0px;
+            text-align: center;
+            font-size: 14px;
+            color: #777777;
+            line-height: 30px;
+        }
+
+        .stopvoicerecord .voiceRecordCont #stopVoiceRecordBtn {
+            margin: 10px auto 0px;
+            width: 90%;
+            text-align: center;
+            line-height: 36px;
+            background: #3eb94e;
+            font-size: 14px;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 18px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            $.getJSON("/balance/info", null, function (data) {
+                let obj = data.obj;
+                $("#balance").html(obj.balance);
+                $("#integral").html(obj.integral);
+            });
+        });
+    </script>
+</head>
+<body class="layui-view-body">
+<div class="content">
+
+
+    <div class="expEnterCont">
+        <div class="expEnterIcon">
+            <img src="../images/wallet.png" width="100%">
+            <p>钱包</p>
+        </div>
+    </div>
+</div>
+
+<div class="layui-content">
+    <div class="layui-row layui-col-space20">
+        <div class="layui-col-sm6 layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-body chart-card">
+                    <div class="chart-header">
+                        <div class="metawrap">
+                            <div class="meta">
+                                <span>余额</span>
+                            </div>
+                            <div class="total" id="balance">-</div>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <div class="contentwrap">
+                        </div>
+                    </div>
+                    <div class="chart-footer">
+                        <div class="field">
+                            <span>冻结</span>
+                            <span>-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm6 layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-body chart-card">
+                    <div class="chart-header">
+                        <div class="metawrap">
+                            <div class="meta">
+                                <span>积分</span>
+                            </div>
+                            <div id="integral" class="total">-</div>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <div class="contentwrap">
+                        </div>
+                    </div>
+                    <div class="chart-footer">
+                        <div class="field">
+                            <span>冻结</span>
+                            <span>-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="submitBtn" id="add" onclick="window.location.href = 'account2.html'">充值</div>
+<div class="submitBtn" style="margin-top: 10px" onclick="window.location.href = 'checkPayPassword.html'">修改支付密码</div>
+</body>
+</html>

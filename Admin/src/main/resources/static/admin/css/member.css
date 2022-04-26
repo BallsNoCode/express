@@ -1,0 +1,42 @@
+*{margin: 0;padding: 0;border: 0;list-style: none;text-decoration: none;color: inherit;font-weight: normal;font-family: "微软雅黑";box-sizing: border-box;font-style: normal;outline: none;}
+body{width: 100%;overflow-x: hidden;background: url(../images/top-bg.png) top center no-repeat #ffffff;background-size: 100%;}
+img{vertical-align: middle;max-width: 100%;}
+a:hover,a:active,a:visited,a:link,a:focus{-webkit-tap-highlight-color: transparent;outline:none;text-decoration: none;
+}
+/*顶部标题 返回*/
+.top{position: absolute;top: .15rem;left: 0;height: .9rem;line-height: .9rem;width: 100%;text-align: center;font-size: .38rem;color: #FFFFFF;}
+.top i{background: url(../images/icon-back.png) center left no-repeat;position: absolute;top: 0;left: .2rem;height: 100%;display: inline-block;background-size: .16rem .30rem;width: .5rem;height: 100%;}
+/*个人信息*/
+.info-card{margin-top: 1.3rem;width: 100%;height: 3.6rem;padding: 0 .1rem;background: url(../images/card-bg.png) center center no-repeat;background-size: 100%;}
+.info-card .user{display: flex;align-items: center;width: 100%;padding: .6rem .5rem;color: #FFFFFF;}
+.info-card .user img{margin-right: .28rem;width: .85rem;height: .85rem;border-radius: 50%;}
+.info-card .user .name {display: flex;flex-direction: column;}
+.info-card .user .name p{font-size: .35rem;padding-bottom: .15rem;}
+.info-card .user .name span{font-size: .24rem;}
+.info-card .info{display: flex;align-items: center;width: 100%;padding: 0 .5rem;color: #FFFFFF;}
+.info-card .info .item{margin-right: .85rem;display: flex;flex-direction: column;}
+.info-card .info .item p{font-size: .26rem;color: #cfb386;padding-bottom: .1rem;}
+.info-card .info .item span{font-size: .35rem;}
+/*标题*/
+h5.title{font-size: .34rem;color: #1c1c1c;padding:.2rem  .3rem;letter-spacing: .02rem;}
+/*会员充值*/
+.hycz{width: 100%;padding-left: .3rem;}
+.hycz ul{display: flex;width: 100%;overflow-x: auto;}
+.hycz ul::-webkit-scrollbar{width: 0;}
+.hycz ul li{display: flex;align-items: flex-end;flex-shrink: 0;width: 2rem;height: 2.55rem;position: relative;margin-right: .15rem;min-width: 106px;min-height: 118px;}
+.hycz ul li .desc{flex-shrink: 0;width: 2rem;height: 2.35rem;background: #fff;border: .02rem solid #f2f2f3;border-radius: .15rem;text-align: center;min-width: 96px;min-height: 106px;}
+.hycz ul li .desc .type{font-size: .26rem;color: #1c1c1c;padding-top: .35rem;}
+.hycz ul li .desc .money{font-size: .48rem;color: #e3be83;padding-top: .2rem;}
+.hycz ul li .desc .money span{font-size: .26rem;}
+.hycz ul li .desc .remark{font-size: .22rem;color: #a5a3a2;padding-top: 0.05rem;line-height: .3rem;}
+.hycz ul li .limit{position: absolute;top: 0;left: 0;font-size: .2rem;color: #FFFFFF;background: linear-gradient(to right,#222a44,#494f67);padding: .07rem .15rem;border-radius: .15rem 0 .15rem 0;}
+.hycz ul li.active .desc{background: #fbf1e5;border: .02rem solid #edd2a9;}
+.hycz ul .holder{flex-shrink: 0;width: .15rem;}
+.hycz .btn{padding-right:.3rem;}
+.hycz .btn button{width: 100%;height: .85rem;line-height: .85rem;font-size: .3rem;color: #1c1c1c;background: #eccb98;border-radius: .85rem;letter-spacing: .02rem;}
+.hycz .btn p{font-size: .24rem;color: #a5a3a2;padding-top: .15rem;text-align: center;}
+/*会员特权*/
+.hytq{width: 100%;padding: 0 .45rem .2rem .45rem;}
+.hytq ul{display: flex;flex-wrap: wrap;justify-content: space-between;}
+.hytq ul li{font-size: .24rem;color: #383738;width: 1.32rem;text-align: center;margin-bottom: .22rem;}
+.hytq ul li img{width: .8rem;height: .8rem;border-radius: 50%;margin-bottom: .12rem;}

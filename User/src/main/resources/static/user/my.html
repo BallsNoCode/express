@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">个人中心</h1>
+		</header>
+		<div class="mui-content">
+			<div class="my_title">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-media">
+						<a href="modify.html">
+							<img class="mui-media-object mui-pull-left" src="../images/timg.jpg">
+							<div class="mui-media-body">
+								<p>lonely</p>
+								</p>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<!--头像-->
+			<div class="mui-row my_3">
+				<div class="mui-col-xs-12">
+					<ul class="mui-table-view my_list">
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right" href="indent.html">
+								<i class="icon iconfont icon-signboard"></i>我的订单
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="mui-col-xs-3">
+					<span>0</span>
+					<p>待付款</p>
+				</div>
+				<div class="mui-col-xs-3">
+					<span>0</span>
+					<p>待发货</p>
+				</div>
+				<div class="mui-col-xs-3">
+					<span>0</span>
+					<p>已发货</p>
+				</div>
+				<div class="mui-col-xs-3">
+					<span>0</span>
+					<p>已完成</p>
+				</div>
+			</div>
+			<ul class="mui-table-view my_list">
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" href="address.html">
+						<i class="icon iconfont icon-signboard"></i>地址管理
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" href="integral.html">
+						<i class="icon iconfont icon-signboard"></i>积分管理
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" href="wallet.html">
+						<i class="icon iconfont icon-signboard"></i>我的钱包
+					</a>
+				</li>
+			</ul>
+		</div>
+		<nav class="mui-bar mui-bar-tab " id="nav">
+			<a class="mui-tab-item" id="a1" href="index.html">
+				<span class="mui-icon icon iconfont icon-zhuye"></span>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<a class="mui-tab-item" id="a2" href="classify.html">
+				<span class="mui-icon icon iconfont icon-form"></span>
+				<span class="mui-tab-label">查快递</span>
+			</a>
+			<a class="mui-tab-item " id="a3" href="member.html">
+				<span class="mui-icon icon iconfont icon-gouwuche1"></span>
+				<span class="mui-tab-label">福利</span>
+			</a>
+			<a class="mui-tab-item  mui-active" id="a4" href="my.html">
+				<span class="mui-icon icon iconfont icon-account1"></span>
+				<span class="mui-tab-label">个人中心</span>
+			</a>
+		</nav>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+		mui.init();
+		mui('body').on('tap', 'a', function() {
+			document.location.href = this.href;
+		});
+		//获得slider插件对象
+		var gallery = mui('.mui-slider');
+		gallery.slider({
+			interval: 2000 //自动轮播周期，若为0则不自动播放，默认为0；
+		});
+	</script>
+
+</html>

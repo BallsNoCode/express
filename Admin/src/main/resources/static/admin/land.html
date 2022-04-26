@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <style type="text/css">
+        .mui-input-row {
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        #logo {
+            width: 70%;
+            margin: 20px auto;
+            display: block;
+        }
+
+        #master {
+
+            position: absolute;
+
+            left: 0%;
+
+            bottom: 0;
+
+            text-align: center;
+        }
+
+        p {
+            width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">登陆</h1>
+</header>
+<div class="mui-content">
+    <img id="logo" src="images/logo.png" class="mui-slider"/>
+    <div class="mui-row land_title">
+        <div class="mui-col-xs-6 addColor">登陆</div>
+        <div class="mui-col-xs-6">注册</div>
+    </div>
+    <div class="mui-rwo land_cont">
+        <div class="mui-row">
+            <form action="" method="post">
+                <div class="mui-input-row">
+                    <label>手机号</label>
+                    <input type="text" class="mui-input-clear" placeholder="请输入11位手机号" id="phone1">
+                </div>
+                <div class="mobile_hint1"></div>
+                <div class="mui-input-row">
+                    <label>验证码</label>
+                    <input type="text" class="mui-input-clear" id="VerifyCode1" placeholder="">
+                    <input type="button" name="" id="send1" value="发送验证码"/>
+                </div>
+                <input type="button" name="" id="login" value="登陆" class="red_button1"/>
+            </form>
+        </div>
+        <div class="mui-row">
+            <form action="" method="post">
+                <div class="mui-input-row">
+                    <label>手机号</label>
+                    <input type="text" class="mui-input-clear" placeholder="请输入11位手机号" id="phone2">
+                </div>
+                <div class="mobile_hint"></div>
+                <div class="mui-input-row">
+                    <label>验证码</label>
+                    <input type="text" class="mui-input-clear" placeholder="请输入验证码" id="VerifyCode2">
+                    <input type="button" name="" id="send2" value="发送验证码"/>
+                </div>
+                <div class="mui-input-row">
+                    <label>设置密码</label>
+                    <input type="password" class="mui-input-clear reg_password" placeholder="请输入6-16位密码">
+
+                </div>
+                <div class="password_hint"></div>
+                <p>注册代表同意
+                    <a href="">用户服务协议</a>
+                </p>
+                <input type="button" name="" id="register" value="注册" class="red_button"/>
+            </form>
+        </div>
+    </div>
+    <div id="master">
+        <a target="_blank" href="https://beian.miit.gov.cn"
+           style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+            <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">
+                粤ICP备2021033745号-1</p>
+        </a>
+        <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44180202000641"
+           style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+            <img src="images/ba.png" style="float:left; width:auto"/>
+            <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">
+                粤公网安备44180202000641号</p>
+        </a>
+    </div>
+</div>
+<script type="text/javascript" src="js/mui.js"></script>
+<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+<script type="text/javascript" src="js/land.js"></script>
+<script>
+    $(function () {
+        $("#send1").click(function () {
+            let phone = $("#phone1").val();
+            $.getJSON("/loginSms",{phone: phone},function (data) {
+                layer.msg(data.msg);
+            });
+        });
+        $("#login").click(function () {
+            let VerifyCode = $("#VerifyCode1").val();
+            let phone = $("#phone1").val();
+
+            if (phone !== "" && VerifyCode !== ""){
+                $.post("/phoneLogin",{phone:phone,code: VerifyCode},function (data) {
+                    if (data.code === 200){
+                        window.location.href = "index.html"
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                })
+            } else {
+                layer.msg("请输入登录信息")
+            }
+        })
+
+    })
+</script>
+</body>
+
+</html>

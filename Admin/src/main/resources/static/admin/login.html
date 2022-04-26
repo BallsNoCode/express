@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="assets/css/layui.css">
+    <link rel="stylesheet" href="assets/css/login.css">
+    <title>快递e栈管理后台</title>
+    <script src="assets/layui.js"></script>
+    <script src="js/index.js" data-main="login"></script>
+    <script src="js/login.js" data-main="login"></script>
+    <script src="../qrcode/jquery2.1.4.js"></script>
+    <script src="js/jquerysession.js"></script>
+    <script src="../layer/layer.js"></script>
+    <script>
+        $(function () {
+
+            $(".verifyCode").click(function (){
+                var src = "/getVerifyCode?"+new Date().getTime(); //加时间戳，防止浏览器利用缓存
+                $('.verifyCode').attr("src",src);
+            });
+
+            $(".login-button").click(function () {
+                var username = $("#username").val();
+                var password = $("#password").val();
+                var verifyCode = $("#verifyCode").val();
+                var windowId = layer.load();
+                $.post("/login", {username: username, password: password,code: verifyCode}, function (data) {
+                    layer.close(windowId);
+                    layer.msg(data.msg);
+                    if (data.code === 200) {
+                        location.assign("index.html");
+                    }
+                }, "JSON");
+
+            });
+        });
+    </script>
+</head>
+<body class="login-wrap">
+<div class="login-container">
+    <h3>快递e栈后台管理</h3>
+    <form class="login-form" action="index.html">
+        <div class="input-group">
+            <input type="text" id="username" class="input-field">
+            <label for="username" class="input-label">
+                <span class="label-title">用户名</span>
+            </label>
+        </div>
+        <div class="input-group">
+            <input type="password" id="password" class="input-field">
+            <label for="password" class="input-label">
+                <span class="label-title">密码</span>
+            </label>
+        </div>
+        <div class="input-group">
+            <input type="text" id="verifyCode" class="input-field">
+            <label for="verifyCode" class="input-label">
+                <span class="label-title">验证码</span>
+            </label>
+        </div>
+        <img class="verifyCode" src="/getVerifyCode"/>
+        <button type="button" class="login-button">登录<i class="ai ai-enter"></i></button>
+    </form>
+    <div>
+        <a target="_blank" href="https://beian.miit.gov.cn"  style="display:block;text-align: center;">
+            <span style="height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">粤ICP备2021033745号-1</span>
+        </a>
+        <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44180202000641"  style="display:block;text-align: center;">
+            <img src="image/ba.png" style="width:auto"/>
+            <span style="height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">粤公网安备44180202000641号</span>
+        </a>
+    </div>
+</div>
+</body>
+</html>

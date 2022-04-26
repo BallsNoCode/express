@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>物流</title>
+		<meta name="viewport" content="initial-scale=1">
+		<meta name="format-detection" content="telephone=no" />
+		<link rel="stylesheet" href="css/swiper.min.css">
+		<link rel="stylesheet" href="css/shipping.css">
+		<link rel="stylesheet" type="text/css" href="fonts/iconfont.css">
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script>
+			String.prototype.GetValue = function(para) {
+				let reg = new RegExp("(^|&)" + para + "=([^&]*)(&|$)");
+				let r = this.substr(this.indexOf("\?") + 1).match(reg);
+				if (r != null) return decodeURI(r[2]);
+				return null;
+			}
+			let url = document.location.toString();
+			let table = url.GetValue("table");
+			$(function() {
+				$("#del").click(function() {
+					if (table === '2') {
+						window.location.href = "indent.html"
+					} else if (table === "1") {
+						window.location.href = "classify.html";
+					} else {
+						window.location.href = "index.html";
+					}
+				})
+			})
+		</script>
+	</head>
+	<body>
+		<div id="shipping">
+			<div class="swiper-container" id="rotate-swiper">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide rotate-slide">
+						<div class="block">
+							<div class="header">
+								<h3>已揽件</h3>
+								<div class="top-info clearfix">
+									<div class="img"><img
+											src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3879362015,2860370572&fm=26&gp=0.jpg">
+									</div>
+									<div class="txt">
+										<p>猫粮</p>
+										<p>中通快递:CC176548554455</p>
+										<p class="last">预计明天到达</p>
+									</div>
+									<div class="icon"><i class="iconfont icon-xiayiyeqianjinchakangengduo"></i></div>
+								</div>
+							</div>
+							<div class="body">
+								<div class="swiper-container">
+									<div class="swiper-wrapper">
+										<div class="swiper-slide"></div>
+									</div>
+								</div>
+							</div>
+							<div class="footer">本数据由快递100提供</div>
+						</div>
+					</div>
+
+					
+
+				</div>
+				<div class="swiper-pagination" id="rotate-pagination"></div>
+			</div>
+			<div class="close-btn" id="del"><i class="iconfont icon-cuowuguanbiquxiao"></i></div>
+		</div>
+		<div id="show-shipping">查看物流</div>
+		<script src="js/swiper.min.js"></script>
+
+		<script>
+			var swiper = new Swiper('#rotate-swiper', {
+				pagination: {
+					el: '#rotate-pagination',
+				},
+				runCallbacksOnInit: true,
+				watchSlidesProgress: true,
+				on: {
+					progress: function() {
+						for (var i = 1; i < this.slides.length; i++) {
+							if (this.slides[i].progress <= 0) {
+								this.slides.eq(i).find(".block").transition(0)
+								this.slides.eq(i).find(".block").transform("rotateZ(" + 13 * Math.abs(this.slides[i]
+									.progress) + "deg) translate3d(0, 0, 0)")
+							}
+						}
+					},
+					setTransition: function(transition) {
+						for (var i = 1; i < this.slides.length; i++) {
+							if (this.slides[i].progress <= 0) {
+								this.slides.eq(i).find(".block").transition(transition)
+								rot = 13 * Math.abs(this.slides[i].progress);
+								this.slides.eq(i).find(".block").transform("rotateZ(" + rot +
+									"deg) translate3d(0, 0, 0)")
+							}
+						}
+					},
+					init: function() {
+						this.emit('transitionEnd');
+					},
+					transitionEnd: function() {
+						if (this.slides[this.activeIndex].contentLoaded == undefined) {
+							let html = '<ul><li class="big-icon">' 
+							+ '<div><span>04-07 10:15</span></div>'
+							+ '<div><i class="iconfont icon-yunshuzhongwuliu"></i></div>'
+							+ '<div>【青岛市】 快件到达【青岛转运中心B1】</div>'
+							+ '</li><li>'
+							+ '<div><span>04-06 23:09</span></div>'
+							+ '<div><i></i></div>'
+							+ '<div>【合肥市】快件离开【合肥转运中心】已发往【青岛转运中心B1】</div>'
+							+ '</li><li>'
+							+ '<div><span>04-06 17:42</span></div>'
+							+ '<div><i></i></div>'
+							+ '<div>【合肥市】 快件到达【合肥转运中心】</div>'
+							+ '</li><li>'
+							+ '<div><span>04-06 21:47</span></div>'
+							+ '<div><i></i></div>'
+							+ '<div>【安庆市】快件离开【安庆桐城万达网点】已发往【合肥转运中心】</div>'
+							+ '</li><li>'
+							+ '<div><span>04-06 23:09</span></div>'
+							+ '<div><i></i></div>'
+							+ '<div>【安庆市】【安庆桐城万达网点】的李友清(15391912078)已取件。投诉电话:0556-6096988</div>'
+							+ '</li>'
+							+ '</ul>'
+							
+							
+							this.slides.eq(this.activeIndex).find('.swiper-slide').html(html);
+							new Swiper(this.slides.eq(this.activeIndex).find('.swiper-container'), {
+								direction: 'vertical',
+								slidesPerView: 'auto',
+								freeMode: true,
+							});
+							this.slides[this.activeIndex].contentLoaded = true;
+						}
+					},
+				},
+			});
+		</script>
+
+	</body>
+</html>

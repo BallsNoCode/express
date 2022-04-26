@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>我的订单</title>
+		<meta name="viewport"
+			content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
+		
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav s_header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" href="index.html"></a>
+			<h1 class="mui-title">我的订单</h1>
+		</header>
+		<!--头部-->
+		<div class="mui-content">
+			<div class="mui-row option my_3">
+				<div class="mui-col-xs-3 ">
+					<span>2</span>
+					<p>待付款</p>
+				</div>
+				<div class="mui-col-xs-3 ">
+					<span>2</span>
+					<p>已发货</p>
+				</div>
+				<div class="mui-col-xs-3 ">
+					<span>1</span>
+					<p>已完成</p>
+				</div>
+				<div class="mui-col-xs-3 ">
+					<span>1</span>
+					<p>异常</p>
+				</div>
+			</div>
+			<div class="mui-row">
+				<div class="col-xs-12 spbox">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell mui-media">
+							<a href="">
+								<img class="mui-media-object mui-pull-left" src="../images/sf.png">
+								<div class="mui-media-body">
+									<span>广东-东莞&nbsp&nbsp&nbsp</span>
+									<img style="height: 20px;" src="../images/wf.png" />
+									<span>&nbsp&nbsp&nbsp清远-清城</span>
+									<p class='mui-ellipsis'>2&nbsp<span>kg</span>
+									</p>
+								</div>
+							</a>
+							<div class="mui-col-xs-12 i_total">共<span>1</span>件快递，合计￥：<span>18.00</span></div>
+							<div class="mui-col-xs-12"><button>取消订单</button><button>立即支付</button></div>
+						</li>
+
+						<li class="mui-table-view-cell mui-media">
+							<a href="">
+								<img class="mui-media-object mui-pull-left" src="../images/jd.png">
+								<div class="mui-media-body">
+									<span>广东-东莞&nbsp&nbsp&nbsp</span>
+									<img style="height: 20px;" src="../images/wf.png" />
+									<span>&nbsp&nbsp&nbsp清远-清城</span>
+									<p class='mui-ellipsis'>1&nbsp<span>kg</span>
+									</p>
+								</div>
+
+							</a>
+							<div class="mui-col-xs-12 i_total">共<span>1</span>件快递，合计￥：<span>12.00</span></div>
+							<div class="mui-col-xs-12"><button>取消订单</button><button>立即支付</button></div>
+						</li>
+					</ul>
+				</div>
+
+				<!-- 2 -->
+				<div class="col-xs-12 spbox shbox-two">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell mui-media">
+							<a href="">
+								<img class="mui-media-object mui-pull-left" src="../images/sf.png">
+								<div class="mui-media-body">
+									【东莞市】顺丰速运 已收取快件
+									<p class='mui-ellipsis'>2&nbsp<span>kg</span>
+									</p>
+								</div>
+							</a>
+							<div class="mui-col-xs-12 i_total">共<span>1</span>件快递，合计￥：<span>15.00</span></div>
+							<div class="mui-col-xs-12"><button onclick="location.href = 'expressInfo.html?table=2&num='">查看物流</button></div>
+						</li>
+
+						<li class="mui-table-view-cell mui-media">
+							<a href="">
+								<img class="mui-media-object mui-pull-left" src="../images/jd.png">
+								<div class="mui-media-body">
+									您的快件已到达【东莞高埗营业部】
+									<p class='mui-ellipsis'>2&nbsp<span>kg</span>
+									</p>
+								</div>
+							</a>
+							<div class="mui-col-xs-12 i_total">共<span>1</span>件快递，合计￥：<span>12.00</span></div>
+							<div class="mui-col-xs-12"><button onclick="location.href = 'expressInfo.html?table=2&num='">查看物流</button></div>
+						</li>
+					</ul>
+				</div>
+
+				<!-- 3 -->
+				<div class="col-xs-12 spbox shbox-two">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell mui-media">
+							<a href="">
+								<img class="mui-media-object mui-pull-left" src="../images/jd.png">
+								<div class="mui-media-body">
+									您的快件已由本人签收，感谢您使用京东物流，期待再次为您服务
+									<p class='mui-ellipsis'>2&nbsp<span>kg</span>
+									</p>
+								</div>
+							</a>
+							<div class="mui-col-xs-12 i_total">共<span>1</span>件快递，合计￥：<span>12.00</span></div>
+							<div class="mui-col-xs-12"><button>留言评价</button><button>申请售后</button></div>
+						</li>
+
+					</ul>
+				</div>
+
+				<!-- 4 -->
+				<div class="col-xs-12 spbox shbox-two">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell mui-media">
+							<a href="">
+								<img class="mui-media-object mui-pull-left" src="../images/jd.png">
+								<div class="mui-media-body">
+									用户已拒收，原路退回
+									<p class='mui-ellipsis'>2&nbsp<span>kg</span>
+									</p>
+								</div>
+							</a>
+							<div class="mui-col-xs-12 i_total">共<span>1</span>件快递，合计￥：<span>12.00</span></div>
+							<div class="mui-col-xs-12"><button>联系客服</button></div>
+						</li>
+
+					</ul>
+				</div>
+
+			</div>
+		</div>
+		
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui('body').on('tap', 'a', function() {
+				document.location.href = this.href;
+			});
+			//获得slider插件对象
+			var gallery = mui('.mui-slider');
+			gallery.slider({
+				interval: 2000 //自动轮播周期，若为0则不自动播放，默认为0；
+			});
+		</script>
+		<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$(".spbox:gt(0)").hide();
+
+				var hd = $(".option div");
+
+				hd.click(function() {
+
+					$(this).addClass("s_Add")
+
+						.siblings().removeClass("s_Add");
+
+					var sh_index = hd.index(this)
+
+					$(".spbox").eq(sh_index).show().siblings().hide();
+
+				})
+			})
+		</script>
+	</body>
+
+</html>

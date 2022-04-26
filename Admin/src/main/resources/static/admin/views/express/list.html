@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>库存</title>
+
+    <link rel="stylesheet" href="../../css/bootstrap.css">
+    <link rel="stylesheet" href="../../css/table.css">
+    <link rel="stylesheet" type="text/css" href="../../css/select.css"/>
+    <script src='../../js/jquery.min.js'></script>
+    <script src="../../js/script.js"></script>
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/layer/layer.js"></script>
+    <script>
+        String.prototype.GetValue = function (para) {
+            let reg = new RegExp("(^|&)" + para + "=([^&]*)(&|$)");
+            let r = this.substr(this.indexOf("\?") + 1).match(reg);
+            if (r != null) return decodeURI(r[2]);
+            return null;
+        }
+        let url = document.location.toString();
+        let pageNum = url.GetValue("pageNum");
+        $(function () {
+            loadDate(pageNum);
+            $("#skipNum").blur(function () {
+                var num = $("#skipNum").val();
+                loadDate(num);
+            });
+            $("#find").click(function () {
+                var number = $("#number").val();
+                console.log(number)
+                loadDate(pageNum, number);
+            });
+        });
+
+        function checkall() {
+            var alls = document.getElementsByName("check");
+            var ch = document.getElementById("checkall");
+            if (ch.checked) {
+                for (var i = 0; i < alls.length; i++) {
+                    alls[i].checked = true;
+                }
+            } else {
+                for (var i = 0; i < alls.length; i++) {
+                    alls[i].checked = false;
+                }
+            }
+        }
+
+        function loadDate(pageNum, number) {
+            $.ajax({
+                type: "GET",
+                url: "/inventory/list",
+                data: {
+                    pageNum: pageNum,
+                    number: number
+                },
+                dataType: "json",
+                success: function (data) {
+                    var list = data.pageInfo.list;
+                    var item = "";
+                    for (let i = 0; i < list.length; i++) {
+                        var state = list[i].estate === 0 ? "未取件" : "已取件";
+                        var name = list[i].recipients;
+
+                        item += "<tr>" +
+                            "            <td><input type='checkbox' value=" + list[i].eid + "name='check'></td>\n" +
+                            "            <td>" + list[i].eid + "</td>\n" +
+                            "            <td>" + list[i].enumber + "</td>\n" +
+                            "            <td>" + list[i].recipients + "</td>\n" +
+                            "            <td>" + list[i].ephone + "</td>\n" +
+                            "            <td>" + list[i].company + "</td>\n" +
+                            "            <td>" + list[i].code + "</td>\n" +
+                            "            <td>" + list[i].inTime + "</td>\n" +
+                            "            <td>" + state + "</td>\n" +
+                            "            <td>" +
+                            "                <a onclick='look(" + list[i].eid + "," + data.pageInfo.pageNum + ")' title=\"修改信息\" style=\"margin-right: 10px;\">\n" +
+                            "                    <img style=\"width: 25px;height: 25px\" src=\"../../image/update.png\" alt=\"\">\n" +
+                            "                </a>" +
+                            "                <a onclick='sentMessage(" + list[i].ephone + ")' title=\"发送信息\" style=\"margin-right: 50px\">\n" +
+                            "                    <img style=\"width: 25px;height: 25px\" src=\"../../image/tips.png\" alt=\"\">\n" +
+                            "                </a>" +
+                            "                <a onclick='sentSMS(\"" + list[i].recipients + "\",\"" + list[i].code + "\", " + list[i].ephone + "," + list[i].isSent + ")' title=\"发送短信\" style=\"margin-right: 10px\">\n" +
+                            "                    <img style=\"width: 25px;height: 25px\" src=\"../../image/sms.png\" alt=\"\">\n" +
+                            "                </a>" +
+                            "                <a onclick='del(" + list[i].eid + ")' title=\"删除\" style=\"margin-right: 10px\">\n" +
+                            "                    <img style=\"width: 25px;height: 25px\" src=\"../../image/delete.png\" alt=\"\">\n" +
+                            "                </a>" +
+                            "            </td>" +
+                            "    </tr>";
+                    }
+                    $("#tbody").html(item);
+                    fillPageData(data.pageInfo);
+                }
+            });
+        }
+
+        function fillPageData(pageInfo) {
+            let pageStr = '';
+            pageStr += '<li id="firstPage"><a onclick="loadDate(1)" href="javascript:void(0)">首页</a></li>' +
+                '<li><a onclick="loadDate(' + pageInfo.prePage + ')" href="javascript:void(0)">上一页</a></li>';
+            for (let i = 1; i <= pageInfo.pages; i++) {
+                pageStr += '<li><a onclick="loadDate(' + i + ')" href="javascript:void(0)">' + i + '</a></li>'
+            }
+            pageStr += '<li><a onclick="loadDate(' + pageInfo.nextPage + ')" href="javascript:void(0)">下一页</a></li>' +
+                '<li><a onclick="loadDate(' + pageInfo.total + ')" href="javascript:void(0)">末页</a></li>';
+            $("#page").html(pageStr);
+            $("#total").html(pageInfo.total);
+            $("#pages").html(pageInfo.pages);
+        }
+
+        function look(id, pageNum) {
+            window.location.href = "update.html?id=" + id + "&pageNum=" + pageNum;
+        }
+
+        function sentMessage(phone) {
+            window.location.href = "../addMessage.html?phone=" + phone;
+        }
+
+        function sentSMS(recipients, code, phone, isSent) {
+            var Inventory = {
+                recipients: recipients,
+                ePhone: phone,
+                code: code,
+            }
+            if (isSent === 1) {
+                layer.confirm('已发送短信，是否重新发送',function (data) {
+                    layer.close(data);
+                    $.ajax({
+                        type: "POST",
+                        url: "/inventory/sentSMS/",
+                        data: Inventory,
+                        dataType: "json",
+                        success: function () {
+                        }
+                    });
+                });
+            } else {
+                layer.confirm('是否确认发送短信通知？',function (data) {
+                    layer.close(data);
+                    $.ajax({
+                        type: "POST",
+                        url: "/inventory/sentSMS/",
+                        data: Inventory,
+                        dataType: "json",
+                        success: function () {
+                        }
+                    });
+                });
+            }
+
+        }
+
+        function del(Id) {
+            layer.confirm('是否确认已取件?', {
+                btn: ['确定', '取消'],
+                shade: false
+            }, function (date) {
+                layer.close(date);
+                $.ajax({
+                    type: "POST",
+                    url: "/inventory/del/" + Id,
+                    data: null,
+                    dataType: "json",
+                    success: function (data) {
+                        layer.msg(data.msg);
+                    }
+                });
+            })
+
+
+        }
+
+
+    </script>
+</head>
+<body>
+<div class="tbl-header">
+    <table>
+        <tr>
+            <td class="text-right">运单号</td>
+            <td class="content_right"><input class="input inline-input" placeholder="请输入运单单号" id="number"> <span
+                    class="btn btn-info" id="find">立即查找</span></td>
+        </tr>
+        <button onclick="loadDate()" type="button"
+                style="margin-right: 50px; padding:0;float:right;width:30px;height: 30px;background-color:white;background-image: url(../../image/refresh.png);background-size: 100% 100%; border: 1px "></button>
+    </table>
+
+    <table cellpadding="0" cellspacing="0" border="0">
+        <thead>
+        <tr>
+            <th><input type="checkbox" id="checkall" value="" onChange="checkall();"></th>
+            <th>运单编号</th>
+            <th>运单单号</th>
+            <th>收件人</th>
+            <th>收件手机号</th>
+            <th>快递公司</th>
+            <th>取件码</th>
+            <th>入库时间</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<div class="tbl-content">
+    <table cellpadding="0" cellspacing="0" border="0">
+        <tbody id="tbody">
+        </tbody>
+    </table>
+    <div class="form-group">
+        <div class="col-sm-3" style="text-align: right">
+            <ul class="pagination" style="margin: 0;" id="page">
+                <li id="firstPage"><a href="javascript:void(0)">首页</a></li>
+                <li id="prePage"><a href="javascript:void(0)">上一页</a></li>
+                <li><a href="javascript:void(0)">1</a></li>
+                <li><a href="javascript:void(0)">2</a></li>
+                <li id="nextPage"><a href="javascript:void(0)">下一页</a></li>
+                <li id="lastPage"><a href="javascript:void(0)">末页</a></li>
+            </ul>
+        </div>
+        <label class="control-label col-sm-3" style="text-align: right">
+            共<span id="total"></span>条数据，共<span id="pages"></span>页
+        </label>
+        <label class="control-label col-sm-1" style="text-align: right">
+            跳转到第
+        </label>
+        <div class="col-sm-1" style="text-align: right; padding:0;margin: 0"><input class="form-control" id="skipNum"
+                                                                                    name="pageNum" value="1"/></div>
+        <label class="control-label col-sm-1" style="text-align: left">页</label>
+    </div>
+</div>
+</body>
+</html>

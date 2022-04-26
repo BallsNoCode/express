@@ -1,0 +1,4 @@
+# 项目排除路径
+/User/target/
+# 项目排除路径
+/Admin/target/

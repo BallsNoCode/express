@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>首页</title>
+    <link href="../css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <script src="../js/jweixin-1.2.0.js"></script>
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/layer/layer.js"></script>
+    <script>
+        $(function () {
+
+            $.ajax({
+                url: "/WechatConfig",
+                type: "GET",
+                data: "xurl=" + location.href.split('#')[0],
+                success: function (data) {
+                    data = JSON.parse(data);
+                    wx.config({
+                        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        appId: data.appid, // 必填，公众号的唯一标识
+                        timestamp: data.timestamp, // 必填，生成签名的时间戳
+                        nonceStr: data.nonceStr, // 必填，生成签名的随机串
+                        signature: data.signature, // 必填，签名
+                        jsApiList: ['startRecord', 'stopRecord', 'scanQRCode', 'playVoice',
+                            'uploadVoice', 'downloadVoice', 'onVoiceRecordEnd',
+                            'translateVoice', 'downloadVoice', 'onMenuShareTimeline',
+                            'onMenuShareAppMessage'
+                        ] // 必填，需要使用的JS接口列表
+                    });
+                },
+                error: function () {
+
+                }
+            });
+            wx.ready(function () {
+                // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+                $("#scanQRCodeBtn1").click(x1);
+                $("#scanQRCodeBtn2").click(x2);
+            });
+            wx.error(function (res) {
+                // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+                console.log(res);
+            });
+
+            function x1() {
+                wx.scanQRCode({
+                    needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                    scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                    success: function (res) {
+                        var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                        let list = result.split(",");
+                        //扫码获取的单号
+                        let num = list[1];
+                        //发起查询快递信息请求
+                        $.ajax({
+                            type: "GET",
+                            url: "https://ali-deliver.showapi.com/showapi_expInfo",
+                            data: {
+                                appcode: "74bffa35c0124bbe8809c562b1621a83",
+                                com: "auto",
+                                nu: num,
+                            },
+                            beforeSend: function (request) {
+                                request.setRequestHeader("Authorization", "APPCODE 74bffa35c0124bbe8809c562b1621a83");
+                            },
+                            success: function (data) {
+                                if (confirm(data.showapi_res_body.expTextName + ": " + num + " 是否入库？")) {
+                                    let inventory = {
+                                        eNumber: num,
+                                        company: data.showapi_res_body.expTextName
+                                    }
+                                    $.post("/inventory/insert", inventory, function (date) {
+                                        if (layer.code === 200) {
+                                            layer.msg("入库成功！")
+                                        } else {
+                                            layer.msg(date.msg)
+                                        }
+                                    })
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+
+            function x2() {
+                wx.scanQRCode({
+                    needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                    scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                    success: function (res) {
+                        var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                        let list = result.split(",");
+                        //扫码获取的单号
+                        let num = list[1];
+                        if (confirm("单号：" + num + "是否出库")) {
+                            $.post("/inventory/qrcodeUpdate", {num: num}, function (data) {
+                                if (data.code === 200) {
+                                    layer.msg("出库成功！")
+                                } else {
+                                    layer.msg(data.msg);
+                                }
+                            })
+                        }
+                    }
+                });
+            }
+
+            $.getJSON("/inventory/console", null, function (data) {
+                let list = data.list;
+                $("#console1").html(list[0]);
+                $("#console2").html(list[1]);
+                $("#console3").html(list[2]);
+                $("#console4").html(list[3]);
+            })
+            $.getJSON("/inventory/list", {state: 2}, function (data) {
+                let list = data.list;
+                let count = 1;
+                var html = ''
+                for (let i = 0; i < list.length; i++) {
+                    html += "<li class=\"mui-table-view-cell mui-media\">\n" +
+                        "\t\t\t\t\t<a href=\"expressInfo.html?table=0\">\n" +
+                        "\t\t\t\t\t\t<img class=\"mui-media-object mui-pull-left\"\n" +
+                        "\t\t\t\t\t\t\tsrc=\"https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3879362015,2860370572&fm=26&gp=0.jpg\">\n" +
+                        "\t\t\t\t\t\t<div class=\"mui-media-body\">\n" +
+                        "\t\t\t\t\t\t\t" + list[i].enumber + "\n" +
+                        "\t\t\t\t\t\t\t<p>" + list[i].company + "</p>\n" +
+                        "\t\t\t\t\t\t\t太白立交红星美凯龙四单元120" + count + "\n" +
+                        "\t\t\t\t\t\t\t<p style=\"color: #0062CC;\" class=\"mui-ellipsis\">期望上门时间：19：00</p>\n" +
+                        "\t\t\t\t\t\t</div>\n" +
+                        "\t\t\t\t\t</a>\n" +
+                        "\t\t\t\t</li>"
+                    count++
+                }
+                $("#table").html(html);
+
+
+            })
+        });
+    </script>
+</head>
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">快递e栈</h1>
+</header>
+<div class="mui-content">
+    <div id="slider" class="mui-slider">
+        <div class="mui-slider-group mui-slider-loop i_img">
+            <!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+            <div class="mui-slider-item mui-slider-item-duplicate">
+                <a href="#">
+                    <img src="../images/title4.jpg">
+                </a>
+            </div>
+            <!-- 第一张 -->
+            <div class="mui-slider-item">
+                <a href="#">
+                    <img src="../images/title1.jpg">
+                </a>
+            </div>
+            <!-- 第二张 -->
+            <div class="mui-slider-item">
+                <a href="#">
+                    <img src="../images/title2.jpg">
+                </a>
+            </div>
+            <!-- 第三张 -->
+
+            <div class="mui-slider-item">
+                <a href="#">
+                    <img src="../images/title3.jpg">
+                </a>
+            </div>
+            <!-- 第四张 -->
+            <div class="mui-slider-item">
+                <a href="#">
+                    <img src="../images/title4.jpg">
+                </a>
+            </div>
+            <!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+            <div class="mui-slider-item mui-slider-item-duplicate">
+                <a href="#">
+                    <img src="../images/title1.jpg">
+                </a>
+            </div>
+        </div>
+        <div class="mui-slider-indicator">
+            <div class="mui-indicator mui-active"></div>
+            <div class="mui-indicator"></div>
+            <div class="mui-indicator"></div>
+            <div class="mui-indicator"></div>
+        </div>
+    </div>
+    <!--轮播-->
+    <ul class="mui-table-view mui-grid-view mui-grid-9" style="background: #FFFFFF;">
+        <li class="mui-table-view-cell mui-media mui-col-xs-3">
+            <div onclick="window.location.href = 'order.html'">
+                <span class=""><img src="../images/11.png" class="mui-slider"/></span>
+                <div class="mui-media-body">极速寄</div>
+            </div>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-3">
+            <div id="scanQRCodeBtn1">
+                <span class=""><img src="../images/22.png" class="mui-slider"/></span>
+                <div class="mui-media-body">扫码入库</div>
+            </div>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-3">
+            <div id="scanQRCodeBtn2">
+                <span class=""><img src="../images/33.png" class="mui-slider"/></span>
+                <div class="mui-media-body">扫码出库</div>
+            </div>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-3">
+            <div onclick="window.location.href = 'feedback.html'">
+                <span class=""><img src="../images/44.png" class="mui-slider"/></span>
+                <div class="mui-media-body">商家反馈</div>
+            </div>
+        </li>
+    </ul>
+    <!--列表结束-->
+    <div class="mui-row i_adv">
+        <div class="mui-col-xs-6">
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell mui-media">
+                    <a href="javascript:;">
+                        <img class="mui-media-object mui-pull-left" src="../images/1.png">
+                        <div class="mui-media-body">
+                            库存
+                            <p class="mui-ellipsis" id="console1">88件</p>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="mui-col-xs-6">
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell mui-media">
+                    <a href="javascript:;">
+                        <img class="mui-media-object mui-pull-left" src="../images/2.png">
+                        <div class="mui-media-body">
+                            待取
+                            <p class="mui-ellipsis" id="console2">80件</p>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="mui-col-xs-6">
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell mui-media">
+                    <a href="javascript:;">
+                        <img class="mui-media-object mui-pull-left" src="../images/3.png">
+                        <div class="mui-media-body">
+                            待送
+                            <p class="mui-ellipsis" id="console3">5件</p>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="mui-col-xs-6">
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell mui-media">
+                    <a href="javascript:;">
+                        <img class="mui-media-object mui-pull-left" src="../images/4.png">
+                        <div class="mui-media-body">
+                            退回
+                            <p class="mui-ellipsis" id="console4">3件</p>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!---->
+    <div class="mui-row i_more">
+        <div class="mui-col-xs-12"><span>待上门</span><a href="classify.html">MORE + </a></div>
+    </div>
+    <ul id="table" class="mui-table-view i_list">
+        <li class="mui-table-view-cell mui-media">
+            <a href="expressInfo.html?table=0">
+                <img class="mui-media-object mui-pull-left"
+                     src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3879362015,2860370572&fm=26&gp=0.jpg">
+                <div class="mui-media-body">
+                    SF1413506454823
+                    <p>顺丰速运</p>
+                    太白立交红星美凯龙四单元1201
+                    <p style="color: #0062CC;" class="mui-ellipsis">期望上门时间：19：00</p>
+                </div>
+            </a>
+        </li>
+        <li class="mui-table-view-cell mui-media">
+            <a href="expressInfo.html?table=0">
+                <img class="mui-media-object mui-pull-left"
+                     src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4003680228,3155194230&fm=26&gp=0.jpg">
+                <div class="mui-media-body">
+                    773155659870426
+                    <p>申通快递</p>
+                    太白立交红星美凯龙四单元1201
+                    <p style="color: #0062CC;" class="mui-ellipsis">期望上门时间：19：00</p>
+                </div>
+            </a>
+        </li>
+    </ul>
+
+</div>
+<nav class="mui-bar mui-bar-tab " id="nav">
+    <a class="mui-tab-item mui-active" id="a1" href="index.html">
+        <span class="mui-icon icon iconfont icon-zhuye"></span>
+        <span class="mui-tab-label">首页</span>
+    </a>
+    <a class="mui-tab-item" id="a2" href="classify.html">
+        <span class="mui-icon icon iconfont icon-form"></span>
+        <span class="mui-tab-label">查快递</span>
+    </a>
+    <a class="mui-tab-item " id="a4" href="my.html">
+        <span class="mui-icon icon iconfont icon-account1"></span>
+        <span class="mui-tab-label">个人中心</span>
+    </a>
+</nav>
+</body>
+<script src="../js/mui.js"></script>
+<script type="text/javascript">
+    mui.init();
+    mui('body').on('tap', 'a', function () {
+        document.location.href = this.href;
+    });
+    //获得slider插件对象
+    var gallery = mui('.mui-slider');
+    gallery.slider({
+        interval: 2000 //自动轮播周期，若为0则不自动播放，默认为0；
+    });
+</script>
+
+</html>

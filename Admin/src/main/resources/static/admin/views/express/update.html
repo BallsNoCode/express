@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../../css/reset.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/add.css"/>
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/layer/layer.js"></script>
+    <script src="../../assets/layui.all.js"></script>
+    <script>
+        var form = layui.form
+            , layer = layui.layer;
+    </script>
+    <script>
+        String.prototype.GetValue = function (para) {
+            let reg = new RegExp("(^|&)" + para + "=([^&]*)(&|$)");
+            let r = this.substr(this.indexOf("\?") + 1).match(reg);
+            if (r != null) return decodeURI(r[2]);
+            return null;
+        }
+        let url = document.location.toString();
+        let id = url.GetValue("id");
+        let pageNum = url.GetValue("pageNum");
+        $(function () {
+            loadDate();
+            $("#reset").click(function () {
+                loadDate()
+            });
+            $('#back').click(function () {
+                window.location.href = "list.html?pageNum=" + pageNum;
+            });
+            $("#update").click(function () {
+                var state = $("input[name='state']:checked").val();
+                var inventory = {
+                    eId: id,
+                    eNumber: $("input:eq(0)").val(),
+                    company: $("input:eq(1)").val(),
+                    recipients: $("input:eq(2)").val(),
+                    ePhone: $("input:eq(3)").val(),
+                    code: $("input:eq(4)").val(),
+                    state: state
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/inventory/update",
+                    data: inventory,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code === 200) {
+                            confirm("修改成功！");
+                            window.location.href = "list.html?pageNum=" + pageNum;
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                    }
+                });
+            })
+        });
+
+        function loadDate() {
+            $.ajax({
+                type: "GET",
+                url: "/inventory/" + id,
+                data: null,
+                dataType: "json",
+                success: function (data) {
+                    $("input:eq(0)").val(data.obj.enumber);
+                    $("input:eq(1)").val(data.obj.company);
+                    $("input:eq(2)").val(data.obj.recipients);
+                    $("input:eq(3)").val(data.obj.ephone);
+                    $("input:eq(4)").val(data.obj.code);
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<div id="app">
+    <div class="header">
+        <span>修改寄件信息</span>
+    </div>
+    <div class="content">
+        <table>
+            <tr>
+                <td class="text-right">快递单号</td>
+                <td class="content_right"><input class="input" placeholder="请输入快递单号"></td>
+            </tr>
+            <tr>
+                <td class="text-right">快递公司</td>
+                <td class="content_right"><input class="input" placeholder="请输入快递公司"></td>
+            </tr>
+            <tr>
+                <td class="text-right">收货人姓名</td>
+                <td class="content_right"><input class="input" placeholder="请输入姓名"></td>
+            </tr>
+            <tr>
+                <td class="text-right">收货号码</td>
+                <td class="content_right"><input class="input" placeholder="请输入手机号码"></td>
+            </tr>
+            <tr>
+                <td class="text-right">取件码</td>
+                <td class="content_right"><input class="input" placeholder="取件码"></td>
+            </tr>
+            <tr>
+                <td class="text-right">状态</td>
+                <td>
+                    <input type="radio" name="state" value="0" checked/>未取&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="state" value="1"/>已取
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td class="content_right"><span class="btn btn-info" id="update">立即修改</span>
+                    <span class="btn" id="reset">重置</span>
+                    <span class="btn" id="back">返回</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+
+</html>

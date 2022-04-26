@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>会员中心</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../css/member.css" />
+		<script src="../js/flexible.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<!--返回-->
+		<div class="top">
+			<i></i>会员中心
+		</div>
+		<!--个人信息-->
+		<div class="info-card">
+			<div class="user">
+				<img src="../images/head.png" />
+				<div class="name">
+					<p>张三</p>
+					<span>升级至尊会员享额外特权</span>
+					<span>2022-02-24到期</span>
+				</div>
+			</div>
+			<div class="info">
+				<div class="item">
+					<p>积分：298</p>
+				</div>
+				<div class="item">
+					<p>金币：920</p>
+				</div>
+				<div class="item">
+					<p>优惠券：3</p>
+				</div>
+			</div>
+		</div>
+		<!--会员充值-->
+		<h5 class="title">会员充值</h5>
+		<div class="hycz">
+			<ul>
+				<li class="active">
+					<div class="desc">
+						<p class="type">12个月</p>
+						<p class="money"><span>￥</span>88</p>
+						<div class="remark">
+							<p>到期自动续费</p>
+							<p>可随时关闭</p>
+						</div>
+					</div>
+					<div class="limit">
+						限时特价 送豪礼
+					</div>
+				</li>
+				<li>
+					<div class="desc">
+						<p class="type">1个月</p>
+						<p class="money"><span>￥</span>15</p>
+						<div class="remark">
+							<p>联合月卡</p>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="desc">
+						<p class="type">连续包月</p>
+						<p class="money"><span>￥</span>10</p>
+						<div class="remark">
+							<p>到期自动续费</p>
+							<p>可随时关闭</p>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="desc">
+						<p class="type">连续包年</p>
+						<p class="money"><span>￥</span>68</p>
+						<div class="remark">
+							<p>到期自动续费</p>
+							<p>可随时关闭</p>
+						</div>
+					</div>
+				</li>
+				<div class="holder"></div>
+			</ul>
+			<div class="btn">
+				<button id="pay">立即升级</button>
+				<p>升级得800金币</p>
+			</div>
+		</div>
+		<h5 class="title">会员特权</h5>
+		<div class="hytq">
+			<ul>
+				<li>
+					<img src="../images/icon-jinbi.png" />
+					<p>每日金币</p>
+				</li>
+				<li>
+					<img src="../images/icon-shenjuan.png" />
+					<p>大额神券</p>
+				</li>
+				<li>
+					<img src="../images/icon-fanli.png" />
+					<p>更多返利</p>
+				</li>
+				<li>
+					<img src="../images/icon-shangpin.png" />
+					<p>精选商品</p>
+				</li>
+				<li>
+					<img src="../images/icon-jisu.png" />
+					<p>极速到账</p>
+				</li>
+				<li>
+					<img src="../images/icon-fenxiang.png" />
+					<p>分享赚</p>
+				</li>
+				<li>
+					<img src="../images/icon-huodong.png" />
+					<p>专享活动</p>
+				</li>
+				<li>
+					<img src="../images/icon-shengri.png" />
+					<p>生日折扣</p>
+				</li>
+				<li>
+					<img src="../images/icon-tixing.png" />
+					<p>上架提醒</p>
+				</li>
+				<li>
+					<img src="../images/icon-kefu.png" />
+					<p>专属客服</p>
+				</li>
+			</ul>
+		</div>
+		<nav class="mui-bar mui-bar-tab " id="nav">
+			<a class="mui-tab-item" id="a1" href="index.html">
+				<span class="mui-icon icon iconfont icon-zhuye"></span>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<a class="mui-tab-item" id="a2" href="classify.html">
+				<span class="mui-icon icon iconfont icon-form"></span>
+				<span class="mui-tab-label">查快递</span>
+			</a>
+			<a class="mui-tab-item mui-active" id="a3" href="member.html">
+				<span class="mui-icon icon iconfont icon-gouwuche1"></span>
+				<span class="mui-tab-label">福利</span>
+			</a>
+			<a class="mui-tab-item " id="a4" href="my.html">
+				<span class="mui-icon icon iconfont icon-account1"></span>
+				<span class="mui-tab-label">个人中心</span>
+			</a>
+		</nav>
+	</body>
+
+</html>
+
+<script type="text/javascript">
+	$('.hycz ul li').click(function() {
+		var index = $(this).index();
+		$(this).addClass('active').siblings().removeClass('active');
+
+		$('.hycz ul').scrollLeft($(this).width() * index)
+	})
+
+	$('#pay').click(function() {
+		var type = $('.hycz ul li.active').find('.type').text();
+		var money = $('.hycz ul li.active').find('.money').text();
+		confirm("确定要充值" + type + "会员吗？" + "价值：" + money.substr(1) + "元")
+	})
+</script>
+<script src="../js/mui.js"></script>
+<script src="../js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript">
+	mui.init();
+	mui('body').on('tap', 'a', function() {
+		document.location.href = this.href;
+	});
+	//获得slider插件对象
+	var gallery = mui('.mui-slider');
+	gallery.slider({
+		interval: 2000 //自动轮播周期，若为0则不自动播放，默认为0；
+	});
+</script>

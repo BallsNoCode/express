@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css"/>
+	</head>
+	<style type="text/css">
+		.mui-table-view .mui-media-object {
+			line-height: 50px;
+			max-width: 50px;
+			height: 50px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">个人信息</h1>
+		</header>
+		<div class="mui-content m_list">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;" class="mui-navigate-right">
+						<img class="mui-media-object mui-pull-right" src="../images/timg.jpg">
+						<div class="mui-media-body">
+							头像
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;" class="mui-navigate-right">
+						<div class="mui-media-body">
+							昵称
+							<span class="mui-pull-right">张三</span>
+						</div>
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+			        <li class="mui-table-view-cell">
+			            <a class="mui-navigate-right">
+			                	登陆手机号
+			                	<span class="mui-pull-right">修改</span>
+			            </a>
+			        </li>
+			      <li class="mui-table-view-cell">
+			            <a class="mui-navigate-right">
+			                	修改密码
+			                	<span class="mui-pull-right">修改</span>
+			            </a>
+			       </li>
+			    </ul>
+			    <input type="button" name="" id="" value="退出登陆"/>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+	</body>
+
+</html>

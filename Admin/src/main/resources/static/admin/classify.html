@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>查快递</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.css">
+		<link rel="stylesheet" type="text/css" href="css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+
+		<style>
+			* {
+				font-size: 17px;
+			}
+
+
+			p {
+				font-size: 14px;
+				margin-top: 0;
+				line-height: 28px;
+				color: #555555;
+				margin-bottom: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" href="index.html"></a>
+			<h1 class="mui-title">查快递</h1>
+		</header>
+		<div class="mui-content mui-row mui-fullscreen">
+			<div class="mui-input-row mui-search" style="margin-top: 10px;">
+				<input type="search" class="mui-input-clear" placeholder="请输入运单号">
+			</div>
+			<div class="mui-content">
+				<div class="mui-row i_adv">
+					<ul class="mui-table-view i_list">
+						<li class="mui-table-view-cell mui-media">
+							<a href="">
+								<img class="mui-media-object mui-pull-left"
+									src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3879362015,2860370572&fm=26&gp=0.jpg">
+								<div class="mui-media-body">
+									<strong >待取件</strong>
+									<p>手机尾号2450的包裹</p>
+									<p style="color: #0062CC;" class="mui-ellipsis">取件码：A2-11-01</p>
+								</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<a href="">
+								<img class="mui-media-object mui-pull-left"
+									src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3879362015,2860370572&fm=26&gp=0.jpg">
+								<div class="mui-media-body">
+									<strong >待上门</strong>
+									<p>SF1413506454823</p>
+									太白立交红星美凯龙四单元1201
+									<p style="color: #0062CC;" class="mui-ellipsis">期望上门时间：19：00</p>
+								</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<a href="">
+								<img class="mui-media-object mui-pull-left"
+									src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4003680228,3155194230&fm=26&gp=0.jpg">
+								<div class="mui-media-body">
+									<strong>已签收</strong>
+									<p>手机尾号2450的包裹</p>
+									<p>申通快递：2022-04-12 14:03:02签收</p>
+									<p></p>
+								</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<a href="expressInfo.html?table=1&num=773155659870426">
+								<img class="mui-media-object mui-pull-left" src="images/sf.png">
+								<div class="mui-media-body">
+									<strong>运输中</strong>
+									<p style="margin-bottom: 0px;">顺丰速运：773155659870426</p>
+									<p>
+										【东莞市】顺丰速运 已收取快件
+										</br>
+										2022-04-12 14:03:02
+									</p>
+									<p></p>
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<nav class="mui-bar mui-bar-tab " id="nav">
+			<a class="mui-tab-item" id="a1" href="index.html">
+				<span class="mui-icon icon iconfont icon-zhuye"></span>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<a class="mui-tab-item  mui-active" id="a2" href="classify.html">
+				<span class="mui-icon icon iconfont icon-form"></span>
+				<span class="mui-tab-label">查快递</span>
+			</a>
+			<a class="mui-tab-item " id="a4" href="my.html">
+				<span class="mui-icon icon iconfont icon-account1"></span>
+				<span class="mui-tab-label">个人中心</span>
+			</a>
+		</nav>
+		<script src="js/mui.min.js"></script>
+		<script>
+			mui.init();
+			mui('body').on('tap', 'a', function() {
+				document.location.href = this.href;
+			});
+		</script>
+	</body>
