@@ -59,7 +59,9 @@
 			}
 			let url = document.location.toString();
 			let type = url.GetValue("type");
-
+			let send = url.GetValue("send");
+			let sendId = url.GetValue("sendId");
+			let pickId = url.GetValue("pickId");
 			$(function() {
 				var total = $(".total").text()
 				console.log(total);
@@ -69,6 +71,83 @@
 						"</div>"
 					$("#type").html(item)
 				}
+				$.getJSON("/balance/info",null,function (data) {
+					$("#money").html("余额: ￥"+data.obj.balance + ".00")
+				})
+				if (send === "true") {
+					$.getJSON("/address/list", {id: sendId}, function (data) {
+						let obj = data.list[0];
+						let item = '<img src="../images/sent.png"/>\n' +
+								'        <input type="text" hidden id="id" value="' + obj.id + '">\n' +
+								'        <a href="address.html?send=true">\n' +
+								'            <div class="mui-col-xs-12">' + obj.name + ' <span class="mui-pull-right">' + obj.phone + '</span></div>\n' +
+								'            <div class="mui-col-xs-12"><i\n' +
+								'                    class="icon iconfont icon-map">地址</i><span>' + obj.info + '</span></div>\n' +
+								'        </a>';
+						$("#send").html(item);
+					});
+					if (pickId !== '') {
+						$.getJSON("/address/list", {id: pickId}, function (data) {
+							let obj = data.list[0];
+							let item = '<img src="../images/pick.png"/>\n' +
+									'        <input type="text" hidden id="id" value="' + pickId + '">\n' +
+									'        <a href="address.html?sendId=' + sendId + '">\n' +
+									'            <div class="mui-col-xs-12">' + obj.name + ' <span class="mui-pull-right">' + obj.phone + '</span></div>\n' +
+									'            <div class="mui-col-xs-12"><i\n' +
+									'                    class="icon iconfont icon-map">地址</i><span>' + obj.info + '</span></div>\n' +
+									'        </a>';
+							$("#pick").html(item);
+						})
+					}
+				} else {
+					$.getJSON("/address/list", null, function (data) {
+						let list = data.list;
+						for (let i = 0; i < list.length; i++) {
+							if (list[i].iddefault === 1) {
+								console.log("aa")
+								let item = '<img src="../images/sent.png"/>\n' +
+										'        <a href="address.html?send=true">\n' +
+										'            <div class="mui-col-xs-12">' + list[i].name + ' <span class="mui-pull-right">' + list[i].phone + '</span></div>\n' +
+										'            <div class="mui-col-xs-12"><i\n' +
+										'                    class="icon iconfont icon-map">地址</i><span>' + list[i].info + '</span></div>\n' +
+										'        </a>';
+								$("#send").html(item);
+								item = '<img src="../images/pick.png" />\n' +
+										'\t\t\t\t<a href="address.html?sendId=' + list[i].id + '">\n' +
+										'\t\t\t\t\t<div class="mui-col-xs-12">张三 <span class="mui-pull-right">15202931513</span></div>\n' +
+										'\t\t\t\t\t<div class="mui-col-xs-12"><i\n' +
+										'\t\t\t\t\t\t\tclass="icon iconfont icon-map">地址</i><span>陕西省西安市碑林区太白立交红星美凯龙四单元1201</span></div>\n' +
+										'\t\t\t\t</a>'
+								$("#pick").html(item);
+							}
+						}
+					})
+				}
+				let cost = 12.00;
+				$(".weight").click(function () {
+					let weight = $("#weight").val();
+					cost = 12.00 + (weight - 1) * 2
+					$("#cost").html(cost + ".00");
+				})
+
+				$("#submit").click(function () {
+					let method = $("input[name='payment-method']:checked").val();
+					console.log(method)
+					if (method === "0"){
+						var vNow = new Date();
+						var sNow = "";
+						sNow += String(vNow.getFullYear());
+						sNow += String(vNow.getMonth() + 1);
+						sNow += String(vNow.getDate());
+						sNow += String(vNow.getHours());
+						sNow += String(vNow.getMinutes());
+						sNow += String(vNow.getSeconds());
+						sNow += String(vNow.getMilliseconds());
+						window.location.href = "/Alipay?WIDout_trade_no=" + sNow + "&WIDsubject=快递e栈充值&WIDbody=充值费用&WIDtotal_amount=" + aggregate + "&id=1";
+					} else {
+						window.location.href = "../pay.html?cost=" + cost;
+					}
+				})
 			})
 		</script>
 	</head>
@@ -109,9 +188,9 @@
 					</div>
 					<div class="mui-col-xs-6" style="float: right;width: 120px;">
 						<div class="mui-numbox" data-numbox-step='1' data-numbox-min='0' data-numbox-max='100' id="d1">
-							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
-							<input class="mui-input-numbox" type="number" class="pr" value="1" />
-							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+							<button class="mui-btn mui-btn-numbox-minus weight" type="button">-</button>
+							<input id="weight" class="mui-input-numbox" type="number" class="pr" value="1"/>
+							<button class="mui-btn mui-btn-numbox-plus weight" type="button">+</button>
 						</div>
 					</div>
 				</li>
@@ -144,9 +223,9 @@
 				</li>
 			</ul>
 			<div class="mui-row position_a">
-				<div class="mui-col-xs-8">合计：<span>18.00</span></div>
+				<div class="mui-col-xs-8">合计：<span id="cost">12.00</span></div>
 				<div class="mui-col-xs-4">
-					<a href="">提交订单</a>
+					<a href="#" id="submit" >提交订单</a>
 				</div>
 			</div>
 		</div>

@@ -8,6 +8,7 @@ import com.kkb.mapper.InventoryMapper;
 import com.kkb.util.RandomUtil;
 import com.kkb.vo.Top;
 import lombok.val;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,13 +35,13 @@ public class InventoryService {
     private RandomUtil randomUtil = new RandomUtil();
 
     /**
+     * @param state: 查询条件（快递状态）
      * @Description: 查询所有库存
      * @Author: APPDE
      * @Date: 2022/4/24 19:57
-     * @param state: 查询条件（快递状态）
      * @return: java.util.List<com.kkb.pojo.Inventory>
      **/
-    public List<Inventory> queryAll(Integer state){
+    public List<Inventory> queryAll(Integer state) {
         Example example = new Example(Inventory.class);
         val criteria = example.createCriteria();
         if (state != null) {
@@ -55,11 +56,13 @@ public class InventoryService {
      * @param number 单号
      * @return 查询对象
      */
-    public Inventory queryByNum(String number) {
+    public List<Inventory> query(String number) {
         Example example = new Example(Inventory.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("eNumber", number);
-        return inventoryMapper.selectOneByExample(example);
+        if (!StringUtils.isEmpty(number)) {
+            criteria.andEqualTo("eNumber", number);
+        }
+        return inventoryMapper.selectByExample(example);
     }
 
     /**
@@ -70,10 +73,13 @@ public class InventoryService {
      * @return 分页数据
      */
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public PageInfo<Inventory> queryByPhone(Integer pageNum, String phone) {
+    public PageInfo<Inventory> queryByPhone(Integer pageNum, String phone, String number) {
         Example example = new Example(Inventory.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("ePhone", phone);
+        if (!StringUtils.isEmpty(number)) {
+            criteria.andEqualTo("eNumber", number);
+        }
         List<Inventory> inventories = inventoryMapper.selectByExample(example);
         PageHelper.startPage(pageNum, 5);
         return new PageInfo<>(inventories);
@@ -180,20 +186,20 @@ public class InventoryService {
      * @Date: 2022/4/24 19:55
      * @return: java.util.List<java.lang.Integer>
      **/
-    @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
-    public List<Integer> console(){
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public List<Integer> console() {
         val i = inventoryMapper.selectCount(null);
         Example example = new Example(Inventory.class);
         val criteria = example.createCriteria();
-        criteria.orEqualTo("eState",0);
+        criteria.orEqualTo("eState", 0);
         Integer i1 = inventoryMapper.selectCountByExample(example);
-        criteria.orEqualTo("eState",2);
+        criteria.orEqualTo("eState", 2);
         Integer i2 = inventoryMapper.selectCountByExample(example);
-        criteria.orEqualTo("eState",3);
+        criteria.orEqualTo("eState", 3);
         Integer i3 = inventoryMapper.selectCountByExample(example);
         List<Integer> list = new ArrayList<>();
-        i3 = i3 -i2;
-        i2 = i2 -i1;
+        i3 = i3 - i2;
+        i2 = i2 - i1;
         list.add(i);
         list.add(i1);
         list.add(i2);

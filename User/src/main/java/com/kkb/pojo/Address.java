@@ -14,7 +14,7 @@ import lombok.ToString;
 /**
  * @Description  
  * @Author  Hunter
- * @Date 2022-04-26 
+ * @Date 2022-05-04 
  */
 
 @Data
@@ -22,7 +22,7 @@ import lombok.ToString;
 @Table ( name ="address" )
 public class Address  implements Serializable {
 
-	private static final long serialVersionUID =  3399505848560136230L;
+	private static final long serialVersionUID =  4765047234530289261L;
 
 	@Id
    	@Column(name = "id" )
@@ -31,13 +31,19 @@ public class Address  implements Serializable {
    	@Column(name = "name" )
 	private String name;
 
-   	@Column(name = "address" )
-	private String address;
+   	@Column(name = "info" )
+	private String info;
 
    	@Column(name = "iddefault" )
 	private Long iddefault;
 
    	@Column(name = "user_id" )
 	private Long userId;
+
+   	@Column(name = "area" )
+	private String area;
+
+   	@Column(name = "phone" )
+	private String phone;
 
 }

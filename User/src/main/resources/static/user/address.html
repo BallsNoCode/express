@@ -17,49 +17,12 @@
     <h1 class="mui-title">我的地址</h1>
 </header>
 <div class="mui-content address_cont">
-    <div class="mui-row o_map address_list">
-        <a href="order.html">
-            <input hidden id="addressId" value="">
-            <div class="mui-col-xs-12">张三 <span class="mui-pull-right">15202931513</span></div>
-            <div class="mui-col-xs-12"><span>陕西省西安市碑林区太白立交红星美凯龙四单元1201</span></div>
-        </a>
-        <div class="mui-col-xs-12">
-            <input name="radio1" type="radio" id="default"><label>设为默认</label>
-            <a href="" class="mui-pull-right"> <i class="icon iconfont icon-delete"></i> <span> 删除</span></a>
-            <a href="reviseAddress.html?id=" class="mui-pull-right"> <i class="icon iconfont icon-edit"></i>
-                <span> 编辑</span></a>
-        </div>
+    <div id="address_list">
     </div>
-    <!--地址-->
-    <div class="mui-row o_map address_list">
-        <a href="order.html">
-            <div class="mui-col-xs-12">张三 <span class="mui-pull-right">15202931513</span></div>
-            <div class="mui-col-xs-12"><span>陕西省西安市碑林区太白立交红星美凯龙四单元1201</span></div>
-        </a>
-        <div class="mui-col-xs-12">
-            <input name="radio1" type="radio"><label>设为默认</label>
-            <a href="" class="mui-pull-right"> <i class="icon iconfont icon-delete"></i> <span> 删除</span></a>
-            <a href="reviseAddress.html" class="mui-pull-right"> <i class="icon iconfont icon-edit"></i>
-                <span> 编辑</span></a>
-        </div>
-    </div>
-    <!--地址-->
-    <div class="mui-row o_map address_list">
-        <a href="order.html">
-            <div class="mui-col-xs-12">张三 <span class="mui-pull-right">15202931513</span></div>
-            <div class="mui-col-xs-12"><span>陕西省西安市碑林区太白立交红星美凯龙四单元1201</span></div>
-        </a>
-        <div class="mui-col-xs-12">
-            <input name="radio1" type="radio"><label>设为默认</label>
-            <a href="" class="mui-pull-right"> <i class="icon iconfont icon-delete"></i> <span> 删除</span></a>
-            <a href="reviseAddress.html" class="mui-pull-right"> <i class="icon iconfont icon-edit"></i>
-                <span> 编辑</span></a>
-        </div>
-    </div>
-    <!--地址-->
+
     <div class="mui-row position_btn">
         <div class="mui-col-xs-12">
-            <button id="addAddress" class="mui-btn mui-btn-block" onclick="window.location.href='addaddress.html'">+ 添加新地址</button>
+            <button id="addAddress" class="mui-btn mui-btn-block">+ 添加新地址</button>
         </div>
     </div>
 </div>
@@ -68,8 +31,49 @@
 <script type="text/javascript">
     mui.init();
     $(function () {
-
-
+        $("#addAddress").click(function () {
+            window.location.href = "addaddress.html"
+        })
+    })
+</script>
+<script>
+    String.prototype.GetValue = function (para) {
+        let reg = new RegExp("(^|&)" + para + "=([^&]*)(&|$)");
+        let r = this.substr(this.indexOf("\?") + 1).match(reg);
+        if (r != null) return decodeURI(r[2]);
+        return null;
+    }
+    let url = document.location.toString();
+    let send = url.GetValue("send");
+    let sendId = url.GetValue("sendId");
+    $(function () {
+        $.getJSON("/address/list", null, function (data) {
+            let list = data.list;
+            let item = '';
+            for (let i = 0; i < list.length; i++) {
+                item += '<div class="mui-row o_map address_list">\n'
+                if (send === "true") {
+                    item += '\t\t\t\t<a href="order.html?sendId=' + list[i].id + '&send=true">\n'
+                } else {
+                    item += '\t\t\t\t<a href="order.html?pickId=' + list[i].id + '&sendId=' + sendId + '&send=true">\n'
+                }
+                item += '\t\t\t\t\t<input hidden id="addressId" value="">\n' +
+                    '\t\t\t\t\t<div class="mui-col-xs-12">' + list[i].name + ' <span class="mui-pull-right">' + list[i].phone + '</span></div>\n' +
+                    '\t\t\t\t\t<div class="mui-col-xs-12"><span>' + list[i].info + '</span></div>\n' +
+                    '\t\t\t\t</a>\n' +
+                    '\t\t\t\t<div class="mui-col-xs-12">\n'
+                if (list[i].iddefault === 1) {
+                    item += '\t\t\t\t\t<input name="radio1" type="radio" id="default" checked><label>设为默认</label>\n'
+                } else {
+                    item += '\t\t\t\t\t<input name="radio1" type="radio" id="default"><label>设为默认</label>\n'
+                }
+                item += '\t\t\t\t\t<a href="" class="mui-pull-right"> <i class="icon iconfont icon-delete"></i> <span> 删除</span></a>\n' +
+                    '\t\t\t\t\t<a href="reviseAddress.html?id=' + list[i].id + '" class="mui-pull-right"> <i class="icon iconfont icon-edit"></i> <span> 编辑</span></a>\n' +
+                    '\t\t\t\t</div>\n' +
+                    '\t\t\t</div>';
+            }
+            $("#address_list").html(item);
+        })
     })
 </script>
 </body>

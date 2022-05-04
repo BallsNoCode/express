@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
     @Resource
     private UserService userService;
+
 
     /**
      * 账号登录/注册
@@ -69,7 +72,7 @@ public class LoginController {
             user.setULogintime(new Timestamp(System.currentTimeMillis()));
             this.userService.updateUser(user);
             session.setAttribute("user", userPhone);
-            session.setAttribute("id", user.getUId());
+            session.setAttribute("id", Math.toIntExact(user.getUId()));
             return new ResultVo();
         } else {
             return new ResultVo(500, "验证码不一致,请检查");

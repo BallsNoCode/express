@@ -27,6 +27,7 @@ public class BalanceService {
      * @param phone 查询手机号
      * @return 结果对象
      */
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
     public Balance queryInfo(String phone) {
         Example example = new Example(Balance.class);
         Example.Criteria criteria = example.createCriteria();

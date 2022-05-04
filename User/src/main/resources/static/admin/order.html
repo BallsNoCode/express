@@ -1,157 +1,220 @@
 <!doctype html>
 <html>
 
-	<head>
-		<meta charset="UTF-8">
-		<title></title>
-		<meta name="viewport"
-			content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<link href="../css/mui.css" rel="stylesheet" />
-		<link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
-		<link rel="stylesheet" type="text/css" href="../css/style.css" />
-		<style>
-			img {
-				width: 50px;
-				float: left;
-			}
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="../css/mui.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+        img {
+            width: 50px;
+            float: left;
+        }
 
-			.form__radios {
-				display: grid;
-				grid-gap: 1em;
-				gap: 1em;
-			}
+        .form__radios {
+            display: grid;
+            grid-gap: 1em;
+            gap: 1em;
+        }
 
-			.form__radio {
-				-webkit-box-align: center;
-				-ms-flex-align: center;
-				align-items: center;
-				background-color: #fefdfe;
-				border-radius: 1em;
-				-webkit-box-shadow: 0 0 1em rgba(0, 0, 0, 0.0625);
-				box-shadow: 0 0 1em rgba(0, 0, 0, 0.0625);
-				display: -webkit-box;
-				display: -ms-flexbox;
-				display: flex;
-				padding: 1em;
-			}
+        .form__radio {
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            background-color: #fefdfe;
+            border-radius: 1em;
+            -webkit-box-shadow: 0 0 1em rgba(0, 0, 0, 0.0625);
+            box-shadow: 0 0 1em rgba(0, 0, 0, 0.0625);
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            padding: 1em;
+        }
 
-			.form__radio label {
-				-webkit-box-align: center;
-				-ms-flex-align: center;
-				align-items: center;
-				display: -webkit-box;
-				display: -ms-flexbox;
-				display: flex;
-				-webkit-box-flex: 1;
-				-ms-flex: 1;
-				flex: 1;
-				grid-gap: 1em;
-				gap: 1em;
-			}
-		</style>
-		<script src="../js/jquery-3.2.1.min.js"></script>
-		<script>
-			String.prototype.GetValue = function(para) {
-				let reg = new RegExp("(^|&)" + para + "=([^&]*)(&|$)");
-				let r = this.substr(this.indexOf("\?") + 1).match(reg);
-				if (r != null) return decodeURI(r[2]);
-				return null;
-			}
-			let url = document.location.toString();
-			let type = url.GetValue("type");
+        .form__radio label {
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            grid-gap: 1em;
+            gap: 1em;
+        }
+    </style>
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script>
+        String.prototype.GetValue = function (para) {
+            let reg = new RegExp("(^|&)" + para + "=([^&]*)(&|$)");
+            let r = this.substr(this.indexOf("\?") + 1).match(reg);
+            if (r != null) return decodeURI(r[2]);
+            return null;
+        }
+        let url = document.location.toString();
+        let type = url.GetValue("type");
+        let send = url.GetValue("send");
+        let sendId = url.GetValue("sendId");
+        let pickId = url.GetValue("pickId");
+        $(function () {
+            $.getJSON("/balance/info",null,function (data) {
+                $("#money").html("余额: ￥"+data.obj.balance + ".00");
+            })
+            if (send === "true") {
+                $.getJSON("/address/list", {id: sendId}, function (data) {
+                    let obj = data.list[0];
+                    let item = '<img src="../images/sent.png"/>\n' +
+                        '        <input type="text" hidden id="id" value="' + obj.id + '">\n' +
+                        '        <a href="address.html?send=true">\n' +
+                        '            <div class="mui-col-xs-12">' + obj.name + ' <span class="mui-pull-right">' + obj.phone + '</span></div>\n' +
+                        '            <div class="mui-col-xs-12"><i\n' +
+                        '                    class="icon iconfont icon-map">地址</i><span>' + obj.info + '</span></div>\n' +
+                        '        </a>';
+                    $("#send").html(item);
+                });
+                if (pickId !== '') {
+                    $.getJSON("/address/list", {id: pickId}, function (data) {
+                        let obj = data.list[0];
+                        let item = '<img src="../images/pick.png"/>\n' +
+                            '        <input type="text" hidden id="id" value="' + pickId + '">\n' +
+                            '        <a href="address.html?sendId=' + sendId + '">\n' +
+                            '            <div class="mui-col-xs-12">' + obj.name + ' <span class="mui-pull-right">' + obj.phone + '</span></div>\n' +
+                            '            <div class="mui-col-xs-12"><i\n' +
+                            '                    class="icon iconfont icon-map">地址</i><span>' + obj.info + '</span></div>\n' +
+                            '        </a>';
+                        $("#pick").html(item);
+                    })
+                }
+            } else {
+                $.getJSON("/address/list", null, function (data) {
+                    let list = data.list;
+                    for (let i = 0; i < list.length; i++) {
+                        if (list[i].iddefault === 1) {
+                            let item = '<img src="../images/sent.png"/>\n' +
+                                '        <a href="address.html?send=true">\n' +
+                                '            <div class="mui-col-xs-12">' + list[i].name + ' <span class="mui-pull-right">' + list[i].phone + '</span></div>\n' +
+                                '            <div class="mui-col-xs-12"><i\n' +
+                                '                    class="icon iconfont icon-map">地址</i><span>' + list[i].info + '</span></div>\n' +
+                                '        </a>';
+                            $("#send").html(item);
+                            item = '<img src="../images/pick.png" />\n' +
+                                '\t\t\t\t<a href="address.html?sendId=' + list[i].id + '">\n' +
+                                '\t\t\t\t\t<div class="mui-col-xs-12">张三 <span class="mui-pull-right">15202931513</span></div>\n' +
+                                '\t\t\t\t\t<div class="mui-col-xs-12"><i\n' +
+                                '\t\t\t\t\t\t\tclass="icon iconfont icon-map">地址</i><span>陕西省西安市碑林区太白立交红星美凯龙四单元1201</span></div>\n' +
+                                '\t\t\t\t</a>'
+                            $("#pick").html(item);
+                        }
+                    }
+                })
+            }
+            let cost = 12.00;
+            $(".weight").click(function () {
+                let weight = $("#weight").val();
+                cost = 12.00 + (weight - 1) * 2
+                $("#cost").html(cost + ".00");
+            })
 
-			$(function() {
-				var total = $(".total").text()
-				console.log(total);
-				
-			})
-		</script>
-	</head>
+            $("#submit").click(function () {
+                let method = $("input[name='payment-method']:checked").val();
+                console.log(method)
+                if (method === "0"){
+                    var vNow = new Date();
+                    var sNow = "";
+                    sNow += String(vNow.getFullYear());
+                    sNow += String(vNow.getMonth() + 1);
+                    sNow += String(vNow.getDate());
+                    sNow += String(vNow.getHours());
+                    sNow += String(vNow.getMinutes());
+                    sNow += String(vNow.getSeconds());
+                    sNow += String(vNow.getMilliseconds());
+                    window.location.href = "/Alipay?WIDout_trade_no=" + sNow + "&WIDsubject=快递e栈充值&WIDbody=充值费用&WIDtotal_amount=" + aggregate + "&id=1";
+                } else {
+                    window.location.href = "../pay.html?cost=" + cost;
+                }
+            })
+        })
+    </script>
+</head>
 
 
-	<body>
-		<header class="mui-bar mui-bar-nav">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">寄快递</h1>
-		</header>
-		<div class="mui-content">
-			<div class="mui-row o_map">
-				<img src="../images/sent.png" />
-				<a href="address.html">
-					<div class="mui-col-xs-12">张三 <span class="mui-pull-right">15202931513</span></div>
-					<div class="mui-col-xs-12"><i
-							class="icon iconfont icon-map">地址</i><span>陕西省西安市碑林区太白立交红星美凯龙四单元1201</span></div>
-				</a>
-			</div>
-			<div class="mui-row o_map">
-				<img src="../images/pick.png" />
-				<a href="address.html">
-					<div class="mui-col-xs-12">张三 <span class="mui-pull-right">15202931513</span></div>
-					<div class="mui-col-xs-12"><i
-							class="icon iconfont icon-map">地址</i><span>陕西省西安市碑林区太白立交红星美凯龙四单元1201</span></div>
-				</a>
-			</div>
-			<!--地址-->
-			<ul class="mui-table-view o_list">
-				<li class="mui-table-view-cell">
-					<a class="">
-						物品信息
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<div class="mui-col-xs-4">
-						重量
-					</div>
-					<div class="mui-col-xs-6" style="float: right;width: 120px;">
-						<div class="mui-numbox" data-numbox-step='1' data-numbox-min='0' data-numbox-max='100' id="d1">
-							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
-							<input class="mui-input-numbox" type="number" class="pr" value="1" />
-							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
-						</div>
-					</div>
-				</li>
-				<li class="mui-table-view-cell" id="type">
-					<div class='mui-col-xs-6' style='float: right;width: 120px;'>
-						<a href='address.html' class='mui-btn mui-btn-numbox-plus' type='button'>添加收件信息</a>
-					</div>
-				</li>
-			</ul>
-			<ul class="mui-table-view" style="margin-top: 10px;">
-				<li class="mui-table-view-cell">
-					<a class="">
-						付款方式
-					</a>
-				</li>
-				<li>
-					<fieldset style="border: 0px;">
-						<div class="form__radios">
-							<div class="form__radio">
-								<img src="../images/alipay.png" style="width: 25px; height: 25px; margin-right: 10px;" />
-								<label for="paypal">支付宝</label>
-								<input id="paypal" name="payment-method" type="radio" value="0" />
-							</div>
-							<div class="form__radio">
-								<img src="../images/money.png" style="width: 25px; height: 25px; margin-right: 10px;" />
-								<label for="mastercard" id="money">
-									余额: ￥1000</label>
-								<input id="mastercard" name="payment-method" type="radio" value="1" />
-							</div>
-						</div>
-					</fieldset>
-				</li>
-			</ul>
-			<div class="mui-row position_a">
-				<div class="mui-col-xs-8">合计：<span>18.00</span></div>
-				<div class="mui-col-xs-4">
-					<a href="">提交订单</a>
-				</div>
-			</div>
-		</div>
-		<script src="../js/mui.js"></script>
-		<script type="text/javascript">
-			mui.init()
-		</script>
+<body>
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <h1 class="mui-title">寄快递</h1>
+</header>
+<div class="mui-content">
+    <div class="mui-row o_map" id="send">
 
-	</body>
+    </div>
+    <div class="mui-row o_map" id="pick">
+    </div>
+    <!--地址-->
+    <ul class="mui-table-view o_list">
+        <li class="mui-table-view-cell">
+            <a class="">
+                物品信息
+            </a>
+        </li>
+        <li class="mui-table-view-cell">
+            <div class="mui-col-xs-4">
+                重量
+            </div>
+            <div class="mui-col-xs-6" style="float: right;width: 120px;">
+                <div class="mui-numbox" data-numbox-step='1' data-numbox-min='0' data-numbox-max='100' id="d1">
+                    <button class="mui-btn mui-btn-numbox-minus weight" type="button">-</button>
+                    <input id="weight" class="mui-input-numbox" type="number" class="pr" value="1"/>
+                    <button class="mui-btn mui-btn-numbox-plus weight" type="button">+</button>
+                </div>
+            </div>
+        </li>
+        <li class="mui-table-view-cell" id="type">
+            <div class='mui-col-xs-6' style='float: right;width: 120px;'>
+                <a href='address.html' class='mui-btn mui-btn-numbox-plus' type='button'>添加收件信息</a>
+            </div>
+        </li>
+    </ul>
+    <ul class="mui-table-view" style="margin-top: 10px;">
+        <li class="mui-table-view-cell">
+            <a class="">
+                付款方式
+            </a>
+        </li>
+        <li>
+            <fieldset style="border: 0px;">
+                <div class="form__radios">
+                    <div class="form__radio">
+                        <img src="../images/alipay.png" style="width: 25px; height: 25px; margin-right: 10px;"/>
+                        <label for="paypal">支付宝</label>
+                        <input id="paypal" name="payment-method" type="radio" value="0"/>
+                    </div>
+                    <div class="form__radio">
+                        <img src="../images/money.png" style="width: 25px; height: 25px; margin-right: 10px;"/>
+                        <label for="mastercard" id="money"> 余额: ￥1000</label>
+                        <input id="mastercard" name="payment-method" checked type="radio" value="1"/>
+                    </div>
+                </div>
+            </fieldset>
+        </li>
+    </ul>
+    <div class="mui-row position_a">
+        <div class="mui-col-xs-8">合计：<span id="cost">12.00</span></div>
+        <div class="mui-col-xs-4">
+            <a href="#" id="submit" >提交订单</a>
+        </div>
+    </div>
+</div>
+<script src="../js/mui.js"></script>
+<script type="text/javascript">
+    mui.init()
+</script>
+
+</body>
 
 </html>

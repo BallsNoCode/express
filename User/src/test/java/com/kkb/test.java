@@ -4,6 +4,10 @@ import com.kkb.util.CdkUtil;
 import com.kkb.util.RandomUtil;
 import com.kkb.util.SMSUtil;
 import com.kkb.util.TokenUtil;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Time;
@@ -44,16 +48,19 @@ public class test {
         System.out.println(token);
     }
 
-    @Test
-    public void Test(){
-
+    @Around("get()")
+    public void Test(ProceedingJoinPoint joinPoint){
+        System.out.println("Around--start");
+        try {
+            joinPoint.proceed();
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Around--end");
     }
 
 
-
-
-
-
-
-
+    public void get() {
+        System.out.println("GET_Run");
+    }
 }

@@ -2,8 +2,6 @@ package com.kkb.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.kkb.pojo.Inventory;
-import com.kkb.service.InventoryService;
-import com.kkb.util.ExpressUtil;
 import com.kkb.vo.ResultVo;
 import com.kkb.vo.Top;
 import lombok.val;
@@ -12,10 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import tk.mybatis.mapper.entity.Example;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.List;
@@ -35,12 +30,12 @@ public class InventoryController extends thisController {
      * @return 结果对象
      */
     @RequestMapping(value = "/userList", method = RequestMethod.GET)
-    public ResultVo<Inventory> queryUserList(Integer pageNum, HttpSession session) {
-        String user = (String) session.getAttribute("user");
+    public ResultVo<Inventory> queryUserList(Integer pageNum, HttpSession session,String number) {
+        String phone = (String) session.getAttribute("user");
         if (pageNum == null || pageNum < 1) {
             pageNum = 1;
         }
-        PageInfo<Inventory> inventoryPageInfo = inventoryService.queryByPhone(pageNum, user);
+        PageInfo<Inventory> inventoryPageInfo = inventoryService.queryByPhone(pageNum, phone,number);
         return new ResultVo<>(inventoryPageInfo);
     }
 
@@ -65,11 +60,11 @@ public class InventoryController extends thisController {
      */
     @RequestMapping(value = "/query", method = RequestMethod.GET)
     public ResultVo<Inventory> queryByNum(String number) {
-        Inventory inventory = inventoryService.queryByNum(number);
-        if (ObjectUtils.isEmpty(inventory)) {
+        val query = inventoryService.query(number);
+        if (query.size() <= 0) {
             return new ResultVo<>(500, "暂无信息，请稍后重试！");
         } else {
-            return new ResultVo<>(inventory);
+            return new ResultVo<>(query);
         }
     }
 
@@ -87,22 +82,6 @@ public class InventoryController extends thisController {
         } else {
             return new ResultVo<>(inventory);
         }
-    }
-
-    /**
-     * 根据手机号查询快递
-     *
-     * @param phone   查询手机号（从url中获取）
-     * @param pageNum 查询页数
-     * @return 结果对象
-     */
-    @RequestMapping(value = "{phone}", method = RequestMethod.GET)
-    public ResultVo<Inventory> queryByPhone(@PathVariable("phone") String phone, Integer pageNum) {
-        if (pageNum == null || pageNum < 1) {
-            pageNum = 1;
-        }
-        PageInfo<Inventory> inventoryPageInfo = inventoryService.queryByPhone(pageNum, phone);
-        return new ResultVo<>(inventoryPageInfo);
     }
 
     /**
@@ -182,7 +161,8 @@ public class InventoryController extends thisController {
 
     @RequestMapping(value = "/qrcodeUpdate",method = RequestMethod.POST)
     public ResultVo qrcodeUpdate(String num){
-        val inventory = inventoryService.queryByNum(num);
+        val inventories = inventoryService.query(num);
+        Inventory inventory = inventories.get(0);
         inventory.setEState(1);
         inventory.setOutTime(new Timestamp(System.currentTimeMillis()));
         val integer = inventoryService.updateInventory(inventory);
