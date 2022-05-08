@@ -6,6 +6,7 @@ import com.kkb.util.SMSUtil;
 import com.kkb.util.TokenUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
+import org.bouncycastle.util.Arrays;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +61,15 @@ public class test {
     }
 
 
+    @Test
     public void get() {
-        System.out.println("GET_Run");
+        LinkedList list = new LinkedList();
+        list.addFirst(1);
+        list.add(1,5);
+        list.add(1,44);
+        Iterator itr = list.listIterator();
+        while (itr.hasNext()){
+            System.out.println(itr.next());
+        }
     }
 }
