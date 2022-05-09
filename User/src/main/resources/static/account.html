@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+  <title>订单结算</title>
+
+  <link rel="stylesheet" href="/css/buy.css"/>
+  <script src="/js/jquery-3.2.1.min.js"></script>
+  <script src="/js/layer/layer.js"></script>
+  <script>
+    String.prototype.GetValue = function (para) {
+      let reg = new RegExp("(^|&)" + para + "=([^&]*)(&|$)");
+      let r = this.substr(this.indexOf("\?") + 1).match(reg);
+      if (r != null) return decodeURI(r[2]);
+      return null;
+    }
+    let url = document.location.toString();
+    let cost = url.GetValue("cost");
+    console.log(cost)
+    let id = url.GetValue("tid");
+    $(function () {
+      loadData();
+      $("#submit").click(function () {
+        var method = $("input[name='payment-method']:checked").val();
+        if (method === "0"){
+          var vNow = new Date();
+          var sNow = "";
+          sNow += String(vNow.getFullYear());
+          sNow += String(vNow.getMonth() + 1);
+          sNow += String(vNow.getDate());
+          sNow += String(vNow.getHours());
+          sNow += String(vNow.getMinutes());
+          sNow += String(vNow.getSeconds());
+          sNow += String(vNow.getMilliseconds());
+          window.location.href = "/Alipay?WIDout_trade_no=" + sNow + "&WIDsubject=运费&WIDbody=快递运输费用&WIDtotal_amount=" + aggregate + "&id=" + id;
+        }
+        if (method === "1"){
+          window.location.href = "pay.html?cost=" + aggregate + "&id=" + id;
+        } else {
+          layer.msg("请选择支付方式！");
+        }
+      })
+    });
+    let aggregate = 0.00;
+    function loadData() {
+      $.getJSON("/coupon/myDiscounts", {cost: cost}, function (data) {
+        if (data.code === 200){
+          let discounts = data.obj.discounts;
+          $("#cost").html(" ￥" + cost);
+          if (discounts == null){
+            discounts = 0;
+          }
+          $("#discount").html(" -￥" + discounts);
+          aggregate = cost - discounts;
+          $("#aggregate").html(" ￥" + aggregate);
+          $("#money").html("余额: ￥" + data.obj.money)
+        } else {
+          layer.msg(data.msg);
+        }
+      })
+    }
+
+
+  </script>
+</head>
+<body>
+
+<div class="iphone">
+  <header class="header">
+    <h1>订单结算</h1>
+  </header>
+  <form action="" class="form" method="POST">
+    <fieldset>
+      <legend>支付方式</legend>
+      <div class="form__radios">
+        <div class="form__radio">
+          <img src="/images/alipay.png" style="width: 25px; height: 25px; margin-right: 10px;"/>
+          <label for="paypal">支付宝</label>
+          <input id="paypal" name="payment-method" type="radio" value="0"/>
+        </div>
+        <div class="form__radio">
+          <img src="/images/money.png" style="width: 25px; height: 25px; margin-right: 10px;"/>
+          <label for="mastercard" id="money">
+            余额: ￥1000</label>
+          <input id="mastercard" name="payment-method" type="radio" value="1"/>
+        </div>
+      </div>
+    </fieldset>
+
+    <div>
+      <h2>费用清单</h2>
+      <table>
+        <tbody>
+        <tr>
+          <td>运费</td>
+          <td align="right" id="cost">￥18</td>
+        </tr>
+        <tr>
+          <td>折扣</td>
+          <td align="right" id="discount">-￥5</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+          <td>总共</td>
+          <td align="right" id="aggregate">￥13</td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div>
+      <button class="button button--full" type="button" id="submit">
+        立即付款
+      </button>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>
