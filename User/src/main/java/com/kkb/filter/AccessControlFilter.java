@@ -18,7 +18,7 @@ public class AccessControlFilter implements Filter {
         if(loginName != null) {
             chain.doFilter(req, resp);
         } else {
-            response.sendRedirect("/phone/login.html");
+            response.sendRedirect("/land.html");
         }
     }
 

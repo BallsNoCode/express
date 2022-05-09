@@ -36,9 +36,9 @@ public class TransportServiceTest extends TestCase {
     }
 
     @Test
-    public void queryByPhone(){
-        List<Transport> list = transportService.queryByPhone("13333333333");
-        list.forEach(System.out::println);
+    public void console(){
+        val console = transportService.console(2);
+        console.forEach(System.out::println);
     }
 
 }

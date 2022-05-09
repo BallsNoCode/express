@@ -1,8 +1,7 @@
 package com.kkb.service;
 
-import com.kkb.pojo.Balance;
-import com.kkb.pojo.Transport;
 import com.kkb.mapper.TransportMapper;
+import com.kkb.pojo.Transport;
 import com.kkb.util.RandomUtil;
 import lombok.val;
 import org.springframework.stereotype.Service;
@@ -11,8 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import javax.naming.ldap.PagedResultsControl;
-import java.security.acl.LastOwnerException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,16 +55,14 @@ public class TransportService {
      * @Description: 根据手机号查询快递
      * @Author: APPDE
      * @Date: 2022/4/15 14:59
-     * @param phone: 查询快递
+     * @param id: 查询快递
      * @return: java.util.List<com.kkb.pojo.Transport>
      **/
     @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
-    public List<Transport> queryByPhone(String phone){
+    public List<Transport> queryByUser(Integer id){
         Example example = new Example(Transport.class);
         val criteria = example.createCriteria();
-        //用户可能是手机人或者寄件人
-        criteria.orEqualTo("sentPhone",phone);
-        criteria.orEqualTo("pickPhone",phone);
+        criteria.andEqualTo("userid",id);
         return transportMapper.selectByExample(example);
     }
 
@@ -81,6 +77,42 @@ public class TransportService {
         val transport = transportMapper.selectByPrimaryKey(id);
         transport.setTIspay(1L);
         return transportMapper.updateByPrimaryKeySelective(transport);
+    }
+
+
+
+    public List<Integer> console(Integer id){
+        Example example = new Example(Transport.class);
+        val criteria = example.createCriteria();
+        if (id != null){
+            criteria.andEqualTo("userid",id);
+        }
+        criteria.andEqualTo("tState",0);
+        int i = transportMapper.selectCountByExample(example);
+        if (id != null){
+            criteria.orEqualTo("userid",id);
+        }
+        criteria.andEqualTo("tState",1);
+        int i1 = transportMapper.selectCountByExample(example);
+        if (id != null){
+            criteria.orEqualTo("userid",id);
+        }
+        criteria.andEqualTo("tState",2);
+        int i2 = transportMapper.selectCountByExample(example);
+        if (id != null){
+            criteria.orEqualTo("userid",id);
+        }
+        criteria.andEqualTo("tState", 3);
+        int i3 = transportMapper.selectCountByExample(example);
+        i3 = i3 -i2;
+        i2 = i2 - i1;
+        i1 = i1 - i;
+        List<Integer> list = new ArrayList<>();
+        list.add(i);
+        list.add(i1);
+        list.add(i2);
+        list.add(i3);
+        return list;
     }
 
 }

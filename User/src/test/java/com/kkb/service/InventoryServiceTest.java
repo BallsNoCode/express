@@ -24,11 +24,6 @@ public class InventoryServiceTest extends TestCase {
     @Resource
     private InventoryMapper mapper;
 
-    @Test
-    public void TestQueryByNum() {
-        Inventory inventory = service.queryByNum("1213456");
-        System.out.println(inventory);
-    }
 
     @Test
     public void TestMapper() {

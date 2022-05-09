@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>物流</title>
+    <meta name="viewport" content="initial-scale=1">
+    <meta name="format-detection" content="telephone=no"/>
+    <link rel="stylesheet" href="css/swiper.min.css">
+    <link rel="stylesheet" href="css/shipping.css">
+    <link rel="stylesheet" type="text/css" href="fonts/iconfont.css">
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script>
+        String.prototype.GetValue = function (para) {
+            let reg = new RegExp("(^|&)" + para + "=([^&]*)(&|$)");
+            let r = this.substr(this.indexOf("\?") + 1).match(reg);
+            if (r != null) return decodeURI(r[2]);
+            return null;
+        }
+        let url = document.location.toString();
+        let table = url.GetValue("table");
+        let num = url.GetValue("num");
+        $(function () {
+            $("#del").click(function () {
+                if (table === '2') {
+                    window.location.href = "../user/classify.html"
+                } else if (table === "1") {
+                    window.location.href = "../admin/classify.html";
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+<div id="shipping">
+    <div class="swiper-container" id="rotate-swiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide rotate-slide">
+                <div class="block">
+                    <div class="header">
+                        <h3>已揽件</h3>
+                        <div class="top-info clearfix">
+                            <div class="img" id="image">
+                            </div>
+                            <div class="txt">
+                                <p id="num"></p>
+                                <p class="last" id="phone"></p>
+                            </div>
+                            <div class="icon"><i class="iconfont icon-xiayiyeqianjinchakangengduo"></i></div>
+                        </div>
+                    </div>
+                    <div class="body">
+                        <div class="swiper-container">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide" id="table"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer">本数据由快递e栈提供</div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="swiper-pagination" id="rotate-pagination"></div>
+    </div>
+    <div class="close-btn" id="del"><i class="iconfont icon-cuowuguanbiquxiao"></i></div>
+</div>
+<div id="show-shipping">查看物流</div>
+
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/layer/layer.js"></script>
+</script>
+<script src="js/swiper.min.js"></script>
+
+<script>
+    var swiper = new Swiper('#rotate-swiper', {
+        pagination: {
+            el: '#rotate-pagination',
+        },
+        runCallbacksOnInit: true,
+        watchSlidesProgress: true,
+        on: {
+            progress: function () {
+                for (var i = 1; i < this.slides.length; i++) {
+                    if (this.slides[i].progress <= 0) {
+                        this.slides.eq(i).find(".block").transition(0)
+                        this.slides.eq(i).find(".block").transform("rotateZ(" + 13 * Math.abs(this.slides[i]
+                            .progress) + "deg) translate3d(0, 0, 0)")
+                    }
+                }
+            },
+            setTransition: function (transition) {
+                for (var i = 1; i < this.slides.length; i++) {
+                    if (this.slides[i].progress <= 0) {
+                        this.slides.eq(i).find(".block").transition(transition)
+                        rot = 13 * Math.abs(this.slides[i].progress);
+                        this.slides.eq(i).find(".block").transform("rotateZ(" + rot +
+                            "deg) translate3d(0, 0, 0)")
+                    }
+                }
+            },
+            init: function () {
+                this.emit('transitionEnd');
+            },
+            transitionEnd: function () {
+                if (this.slides[this.activeIndex].contentLoaded === undefined) {
+                    $.ajax({
+                        type: "GET",
+                        url: "https://ali-deliver.showapi.com/showapi_expInfo",
+                        data: {
+                            appcode: "74bffa35c0124bbe8809c562b1621a83",
+                            com: "auto",
+                            nu: num,
+                        },
+                        beforeSend: function (request) {
+                            request.setRequestHeader("Authorization", "APPCODE 74bffa35c0124bbe8809c562b1621a83");
+                        },
+                        success: function (data) {
+                            $("#image").html('<img src="' + data.showapi_res_body.logo + '">')
+                            $("#num").html(data.showapi_res_body.expTextName + ':' + num)
+                            $("#phone").html('客服电话:' + data.showapi_res_body.tel)
+
+                            var html = '';
+                            let list = data.showapi_res_body.data;
+                            html = '<ul><li class="big-icon">'
+                                + '<div><span>' + list[0].time + '</span></div>'
+                                + '<div><i class="iconfont icon-yunshuzhongwuliu"></i></div>'
+                                + '<div><p style="overflow: hidden;height: 61px;">' + list[0].context + '</p></div>'
+                                + '</li>'
+                            for (let i = 1; i < list.length; i++) {
+                                html += '<li>'
+                                    + '<div><span>' + list[i].time + '</span></div>'
+                                    + '<div><i></i></div>'
+                                    + '<div><p style="overflow: hidden;height: 61px;">' + list[i].context + '</p></div>'
+                                    + '</li>'
+                            }
+                            $("#table").html(html);
+                        }
+                    });
+                    new Swiper(this.slides.eq(this.activeIndex).find('.swiper-container'), {
+                        direction: 'vertical',
+                        slidesPerView: 'auto',
+                        freeMode: true,
+                    });
+                    this.slides[this.activeIndex].contentLoaded = true;
+
+                }
+            },
+        },
+    });
+</script>
+
+</body>
+</html>

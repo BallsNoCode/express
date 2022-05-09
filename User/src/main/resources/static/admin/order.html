@@ -63,6 +63,13 @@
         let sendId = url.GetValue("sendId");
         let pickId = url.GetValue("pickId");
         $(function () {
+
+            if (type === '1'){
+                $("#type").html('<div class=\'mui-col-xs-6\' style=\'float: right;width: 120px;\'>\n' +
+                    '\t\t\t\t<a href=\'address.html\' class=\'mui-btn mui-btn-numbox-plus\' type=\'button\'>添加收件信息</a>\n' +
+                    '\t\t\t</div>')
+            }
+
             $.getJSON("/balance/info",null,function (data) {
                 $("#money").html("余额: ￥"+data.obj.balance + ".00");
             })
@@ -92,6 +99,20 @@
                     })
                 }
             } else {
+                let html = '<img src="../images/sent.png"/>\n' +
+                    '        <a href="address.html?send=true">\n' +
+                    '            <div class="mui-col-xs-12">请选择地址信息<span class="mui-pull-right"></span></div>\n' +
+                    '            <div class="mui-col-xs-12"><i\n' +
+                    '                    class="icon iconfont icon-map">地址</i><span></span></div>\n' +
+                    '        </a>';
+                $("#send").html(html);
+                html = '<img src="../images/pick.png" />\n' +
+                    '\t\t\t\t<a href="address.html?sendId=">\n' +
+                    '\t\t\t\t\t<div class="mui-col-xs-12">请选择地址信息<span class="mui-pull-right"></span></div>\n' +
+                    '\t\t\t\t\t<div class="mui-col-xs-12"><i\n' +
+                    '\t\t\t\t\t\t\tclass="icon iconfont icon-map">地址</i><span></span></div>\n' +
+                    '\t\t\t\t</a>'
+                $("#pick").html(html);
                 $.getJSON("/address/list", null, function (data) {
                     let list = data.list;
                     for (let i = 0; i < list.length; i++) {
@@ -105,9 +126,9 @@
                             $("#send").html(item);
                             item = '<img src="../images/pick.png" />\n' +
                                 '\t\t\t\t<a href="address.html?sendId=' + list[i].id + '">\n' +
-                                '\t\t\t\t\t<div class="mui-col-xs-12">张三 <span class="mui-pull-right">15202931513</span></div>\n' +
+                                '\t\t\t\t\t<div class="mui-col-xs-12">请选择地址信息 <span class="mui-pull-right"></span></div>\n' +
                                 '\t\t\t\t\t<div class="mui-col-xs-12"><i\n' +
-                                '\t\t\t\t\t\t\tclass="icon iconfont icon-map">地址</i><span>陕西省西安市碑林区太白立交红星美凯龙四单元1201</span></div>\n' +
+                                '\t\t\t\t\t\t\tclass="icon iconfont icon-map">地址</i><span></span></div>\n' +
                                 '\t\t\t\t</a>'
                             $("#pick").html(item);
                         }
@@ -122,22 +143,34 @@
             })
 
             $("#submit").click(function () {
-                let method = $("input[name='payment-method']:checked").val();
-                console.log(method)
-                if (method === "0"){
-                    var vNow = new Date();
-                    var sNow = "";
-                    sNow += String(vNow.getFullYear());
-                    sNow += String(vNow.getMonth() + 1);
-                    sNow += String(vNow.getDate());
-                    sNow += String(vNow.getHours());
-                    sNow += String(vNow.getMinutes());
-                    sNow += String(vNow.getSeconds());
-                    sNow += String(vNow.getMilliseconds());
-                    window.location.href = "/Alipay?WIDout_trade_no=" + sNow + "&WIDsubject=快递e栈充值&WIDbody=充值费用&WIDtotal_amount=" + aggregate + "&id=1";
-                } else {
-                    window.location.href = "../pay.html?cost=" + cost;
+                let transport = {
+                    company: '韵达快递',
+                    tCost: cost,
+                    pickid: pickId,
+                    sendId: sendId
                 }
+
+                $.post("/transport/insert",transport,function (data) {
+                    if (data.code === 200){
+                        let method = $("input[name='payment-method']:checked").val();
+                        if (method === "0"){
+                            var vNow = new Date();
+                            var sNow = "";
+                            sNow += String(vNow.getFullYear());
+                            sNow += String(vNow.getMonth() + 1);
+                            sNow += String(vNow.getDate());
+                            sNow += String(vNow.getHours());
+                            sNow += String(vNow.getMinutes());
+                            sNow += String(vNow.getSeconds());
+                            sNow += String(vNow.getMilliseconds());
+                            window.location.href = "/Alipay?WIDout_trade_no=" + sNow + "&WIDsubject=快递e栈充值&WIDbody=充值费用&WIDtotal_amount=" + aggregate + "&id=1";
+                        } else {
+                            window.location.href = "../pay.html?cost=" + cost;
+                        }
+                    } else {
+                        layer.msg("寄件失败，请稍后重试！");
+                    }
+                })
             })
         })
     </script>

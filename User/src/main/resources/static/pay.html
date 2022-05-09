@@ -51,7 +51,7 @@
                 $.post("/balance/deduct", {cost: cost,id:id}, function () {
                     if (data.code === 200){
                         layer.msg("支付成功！");
-                        window.location.href = "user/my.html";
+                        window.location.href = "ok.html";
                     } else {
                         layer.msg(data.msg);
                     }

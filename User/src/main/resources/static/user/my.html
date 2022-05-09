@@ -8,6 +8,24 @@
 		<link href="../css/mui.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
 		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<script src="../js/jquery-3.2.1.min.js"></script>
+		<script>
+			$(function () {
+				$.getJSON("/user/userInfo",null,function (data) {
+					let obj = data.obj;
+					$("#name").html(obj.uusername)
+					let id = obj.uid;
+					$.getJSON("/transport/console",{id:id},function (data) {
+						let console = data.list;
+						$("#console1").html(console[0])
+						$("#console2").html(console[1])
+						$("#console3").html(console[2])
+						$("#console4").html(console[3])
+					})
+				})
+
+			})
+		</script>
 	</head>
 
 	<body>
@@ -22,8 +40,7 @@
 						<a href="modify.html">
 							<img class="mui-media-object mui-pull-left" src="../images/timg.jpg">
 							<div class="mui-media-body">
-								<p>lonely</p>
-								</p>
+								<p id="name">lonely</p>
 							</div>
 						</a>
 					</li>
@@ -41,19 +58,19 @@
 					</ul>
 				</div>
 				<div class="mui-col-xs-3">
-					<span>0</span>
+					<span id="console1">0</span>
 					<p>待付款</p>
 				</div>
 				<div class="mui-col-xs-3">
-					<span>0</span>
+					<span id="console2">0</span>
 					<p>待发货</p>
 				</div>
 				<div class="mui-col-xs-3">
-					<span>0</span>
+					<span id="console3">0</span>
 					<p>已发货</p>
 				</div>
 				<div class="mui-col-xs-3">
-					<span>0</span>
+					<span id="console4">0</span>
 					<p>已完成</p>
 				</div>
 			</div>

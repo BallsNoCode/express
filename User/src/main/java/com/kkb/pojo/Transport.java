@@ -5,61 +5,57 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.sql.Timestamp;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.Date;
 
 /**
- * @Description  
- * @Author  Hunter
- * @Date 2022-02-13 
+ * @Description
+ * @Author Hunter
+ * @Date 2022-05-10
  */
 
-@Data
+@Setter
+@Getter
+@ToString
 @Entity
-@Table ( name ="transport" )
+@Table(name = "transport")
 public class Transport implements Serializable {
 
-	private static final long serialVersionUID =  8484601833971624923L;
+    private static final long serialVersionUID = 2412288321351861702L;
 
-	@Id
-   	@Column(name = "t_id" )
-	private Long tId;
+    @Id
+    @Column(name = "t_id")
+    private Long tId;
 
-   	@Column(name = "t_number" )
-	private String tNumber;
+    @Column(name = "t_number")
+    private String tNumber;
 
-   	@Column(name = "sent_name" )
-	private String sentName;
+    @Column(name = "company")
+    private String company;
 
-   	@Column(name = "sent_phone" )
-	private String sentPhone;
+    @Column(name = "t_cost")
+    private Double tCost;
 
-   	@Column(name = "sent_location" )
-	private String sentLocation;
+    @Column(name = "t_state")
+    private Long tState;
 
-   	@Column(name = "pick_name" )
-	private String pickName;
+    @Column(name = "t_time")
+    private Date tTime;
 
-   	@Column(name = "pick_phone" )
-	private String pickPhone;
+    @Column(name = "t_ispay")
+    private Long tIspay;
 
-   	@Column(name = "pick_location" )
-	private String pickLocation;
+    @Column(name = "pickid")
+    private Long pickid;
 
-   	@Column(name = "company" )
-	private String company;
+    @Column(name = "sentid")
+    private Long sentid;
 
-   	@Column(name = "t_cost" )
-	private Double tCost;
-
-   	@Column(name = "t_state" )
-	private Long tState;
-
-	@Column(name = "t_ispay" )
-	private Long tIspay;
-
-	@Column(name = "t_time" )
-	private Timestamp tTime;
+    @Column(name = "userid")
+    private Long userid;
 
 }

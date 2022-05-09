@@ -121,8 +121,15 @@
             $.getJSON("/inventory/list", {state: 2}, function (data) {
                 let list = data.list;
                 let count = 1;
-                var html = ''
+                var html = '<li class="mui-table-view-cell mui-media">\n' +
+                    '            <a href="">\n' +
+                    '                <div class="mui-media-body">\n' +
+                    '                    <p style="color: #0062CC; text-align: center" class="mui-ellipsis">暂无上门快递</p>\n' +
+                    '                </div>\n' +
+                    '            </a>\n' +
+                    '        </li>'
                 for (let i = 0; i < list.length; i++) {
+                    html = ''
                     html += "<li class=\"mui-table-view-cell mui-media\">\n" +
                         "\t\t\t\t\t<a href=\"\">\n" +
                         "\t\t\t\t\t\t<img class=\"mui-media-object mui-pull-left\"\n" +
@@ -284,30 +291,7 @@
         <div class="mui-col-xs-12"><span>待上门</span><a href="classify.html">MORE + </a></div>
     </div>
     <ul id="table" class="mui-table-view i_list">
-        <li class="mui-table-view-cell mui-media">
-            <a href="expressInfo.html?table=0">
-                <img class="mui-media-object mui-pull-left"
-                     src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3879362015,2860370572&fm=26&gp=0.jpg">
-                <div class="mui-media-body">
-                    SF1413506454823
-                    <p>顺丰速运</p>
-                    太白立交红星美凯龙四单元1201
-                    <p style="color: #0062CC;" class="mui-ellipsis">期望上门时间：19：00</p>
-                </div>
-            </a>
-        </li>
-        <li class="mui-table-view-cell mui-media">
-            <a href="expressInfo.html?table=0">
-                <img class="mui-media-object mui-pull-left"
-                     src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4003680228,3155194230&fm=26&gp=0.jpg">
-                <div class="mui-media-body">
-                    773155659870426
-                    <p>申通快递</p>
-                    太白立交红星美凯龙四单元1201
-                    <p style="color: #0062CC;" class="mui-ellipsis">期望上门时间：19：00</p>
-                </div>
-            </a>
-        </li>
+
     </ul>
 
 </div>

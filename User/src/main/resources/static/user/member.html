@@ -10,6 +10,15 @@
 		<link rel="stylesheet" type="text/css" href="../css/member.css" />
 		<script src="../js/flexible.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/jquery-3.2.1.min.js"></script>
+		<script>
+			$(function () {
+				$.getJSON("/user/userInfo",null,function (data) {
+					let obj = data.obj;
+					$("#name").html(obj.uusername)
+				})
+			})
+		</script>
 	</head>
 
 	<body>
@@ -22,17 +31,14 @@
 			<div class="user">
 				<img src="../images/head.png" />
 				<div class="name">
-					<p>张三</p>
+					<p id="name">lonely</p>
 					<span>升级至尊会员享额外特权</span>
-					<span>2022-02-24到期</span>
+					<span>2022-05-24到期</span>
 				</div>
 			</div>
 			<div class="info">
 				<div class="item">
 					<p>积分：298</p>
-				</div>
-				<div class="item">
-					<p>金币：920</p>
 				</div>
 				<div class="item">
 					<p>优惠券：3</p>

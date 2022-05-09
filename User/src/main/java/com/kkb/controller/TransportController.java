@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -37,7 +38,9 @@ public class TransportController {
      * @return 结果对象
      */
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public ResultVo add(Transport transport) {
+    public ResultVo add(Transport transport, HttpSession session) {
+        Long id = (Long) session.getAttribute("id");
+        transport.setUserid(id);
         Integer add = transportService.add(transport);
         if (add <= 0) {
             return new ResultVo<>(500, "服务器错误，请稍后重试！");
@@ -73,9 +76,9 @@ public class TransportController {
      * @return: com.kkb.vo.ResultVo<com.kkb.pojo.Transport>
      **/
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    public ResultVo<Transport> queryByPhone(HttpSession session){
-        String phone = String.valueOf(session.getAttribute("user"));
-        List<Transport> transports = transportService.queryByPhone(phone);
+    public ResultVo<Transport> queryByUser(HttpSession session){
+        Integer id = (Integer) session.getAttribute("id");
+        List<Transport> transports = transportService.queryByUser(id);
         if (transports.size() == 0){
             return new ResultVo<>(404,"暂无寄件信息");
         }
@@ -99,4 +102,9 @@ public class TransportController {
         return new ResultVo<>(500,"优惠券使用异常，请稍后重试！");
     }
 
+    @RequestMapping(value = "/console",method = RequestMethod.GET)
+    public ResultVo<Integer> console(Integer id){
+        val console = transportService.console(id);
+        return new ResultVo<>(console);
+    }
 }

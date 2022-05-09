@@ -78,7 +78,7 @@ public class InventoryService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("ePhone", phone);
         if (!StringUtils.isEmpty(number)) {
-            criteria.andEqualTo("eNumber", number);
+            criteria.andLike("eNumber", "%" + number + "%");
         }
         List<Inventory> inventories = inventoryMapper.selectByExample(example);
         PageHelper.startPage(pageNum, 5);

@@ -126,10 +126,8 @@
             }
             $.post("/address/add", address, function (data) {
                 if (data.code === 200) {
-                    layer.msg("添加成功！");
-                    $("#name").val(null)
-                    $("#phone").val(null)
-                    $("#info").val(null)
+                    layer.confirm("添加成功！")
+                    window.location.href = '/address.html';
                 } else {
                     layer.confirm(data.msg);
                 }

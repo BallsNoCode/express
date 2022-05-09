@@ -77,16 +77,17 @@ public class BalanceController extends thisController {
      * @return: com.kkb.vo.ResultVo
      **/
     @RequestMapping(value = "/deduct",method = RequestMethod.POST)
-    public ResultVo deduct(Double cost,Integer id,HttpSession session){
+    public ResultVo deduct(Double cost,HttpSession session){
         String phone = String.valueOf(session.getAttribute("user"));
         val buy = balanceService.Buy(phone, cost);
         if (buy <= 0){
             return new ResultVo<>(500,"支付失败！");
         }
+        Integer id = (Integer) session.getAttribute("id");
         transportService.updateIsPay(id);
-        Coupon coupon = (Coupon) session.getAttribute("coupon");
-        session.removeAttribute("coupon");
-        couponService.delCoupon(coupon.getCId());
+//        Coupon coupon = (Coupon) session.getAttribute("coupon");
+//        session.removeAttribute("coupon");
+//        couponService.delCoupon(coupon.getCId());
         return new ResultVo<>();
     }
 

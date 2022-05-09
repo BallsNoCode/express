@@ -15,5 +15,12 @@
       <jdbc-url>jdbc:mysql://rm-2zeltm8i08e2t038n2o.mysql.rds.aliyuncs.com:7681/express</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="@localhost" uuid="e13088d3-c2dc-4da8-b532-e62aea143656">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
