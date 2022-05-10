@@ -47,6 +47,8 @@ public class AddressService {
      * @Date: 2022/5/4 0:23
      * @return: java.lang.Boolean
      **/
+
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public Boolean updateAddress(Address address) {
         val update = addressMapper.updateByPrimaryKeySelective(address);
         return update > 0;
@@ -59,6 +61,7 @@ public class AddressService {
      * @Date: 2022/5/4 0:24
      * @return: java.lang.Boolean
      **/
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public Boolean addAddress(Address address) {
         address.setIddefault(0L);
         val insert = addressMapper.insert(address);
