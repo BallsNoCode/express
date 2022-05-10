@@ -51,7 +51,7 @@ public class QRCodeController {
             qRCodeContent = "userPhone_" + userPhone;
         }
         session.setAttribute("qrcode", qRCodeContent);
-        request.getRequestDispatcher("/phone/personQRcode.html").forward(request, response);
+        request.getRequestDispatcher("/admin/personQRcode.html").forward(request, response);
     }
 
     /**
