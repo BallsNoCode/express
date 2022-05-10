@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>优惠券</title>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <link href="../css/couponstyle.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/layer/layer.js"></script>
+
+    <script>
+        function t() {
+            var t = $(this).attr();
+            alert(t)
+        }
+
+        $(function () {
+            $.getJSON("/coupon/Num", null, function (data) {
+                var list = data.list;
+                switch (list.length) {
+                    case 0: {
+                        $("#num1").html("剩余：" + 0);
+                        $("#num2").html("剩余：" + 0);
+                        $("#num3").html("剩余：" + 0);
+                        $("#num4").html("剩余：" + 0);
+                        break;
+                    }
+                    case 1: {
+                        $("#num1").html("剩余：" + 0);
+                        $("#num2").html("剩余：" + 0);
+                        $("#num3").html("剩余：" + 0);
+                        $("#num4").html("剩余：" + list[0]);
+                        break;
+                    }
+                    case 2: {
+                        $("#num1").html("剩余：" + 0);
+                        $("#num2").html("剩余：" + 0);
+                        $("#num3").html("剩余：" + list[1]);
+                        $("#num4").html("剩余：" + list[0]);
+                        break;
+                    }
+                    case 3: {
+                        $("#num1").html("剩余：" + 0);
+                        $("#num2").html("剩余：" + list[2]);
+                        $("#num3").html("剩余：" + list[1]);
+                        $("#num4").html("剩余：" + list[0]);
+                        break;
+                    }
+                    case 4: {
+                        $("#num1").html("剩余：" + list[3]);
+                        $("#num2").html("剩余：" + list[2]);
+                        $("#num3").html("剩余：" + list[1]);
+                        $("#num4").html("剩余：" + list[0]);
+                        break;
+                    }
+                }
+            });
+            $("#btn1").click(function () {
+                var coupon = {
+                    cMoney: 10.0000,
+                    cCondition: 10.1000,
+                    cCost: 0,
+                    cIntegral: 50,
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/coupon/cash',
+                    data: coupon,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code === 200) {
+                            layer.msg("兑换成功！");
+                        } else {
+                            layer.msg("兑换失败！")
+                        }
+                    }
+                });
+            });
+            $("#btn2").click(function () {
+                var coupon = {
+                    cMoney: 10.0000,
+                    cCondition: 10.1000,
+                    cCost: 2.0000,
+                    cIntegral: 1000,
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/coupon/cash',
+                    data: coupon,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code === 200) {
+                            layer.msg("兑换成功！");
+                        } else {
+                            layer.msg("兑换失败！")
+                        }
+                    }
+                });
+
+            });
+            $.get
+            $("#btn3").click(function () {
+                var coupon = {
+                    cMoney: 15.0000,
+                    cCondition: 40.0000,
+                    cCost: 5.0000,
+                    cIntegral: 2000,
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/coupon/cash',
+                    data: coupon,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code === 200) {
+                            layer.msg("兑换成功！");
+                        } else {
+                            layer.msg("兑换失败！")
+                        }
+                    }
+                });
+
+            });
+            $("#btn4").click(function () {
+                var coupon = {
+                    cMoney: 20.0000,
+                    cCondition: 50.0000,
+                    cCost: 8.0000,
+                    cIntegral: 3000,
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/coupon/cash',
+                    data: coupon,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code === 200) {
+                            layer.msg("兑换成功！");
+                        } else {
+                            layer.msg("兑换失败！")
+                        }
+                    }
+                });
+            });
+        })
+    </script>
+
+</head>
+<body>
+<section class="aui-flexView">
+    <header class="aui-navBar aui-navBar-fixed b-line">
+        <a href="member.html" class="aui-navBar-item">
+            <i class="icon icon-return"></i>
+        </a>
+        <div class="aui-center">
+            <span class="aui-center-title">优惠券</span>
+        </div>
+        <a href="javascript:;" class="aui-navBar-item">
+            <i class="icon icon-sys"></i>
+        </a>
+    </header>
+    <section class="aui-scrollView">
+        <div class="aui-tab" data-ydui-tab>
+            <div class="aui-flex aui-flex-search b-line">
+                <div class="aui-flex-box">
+                    <input type="text" placeholder="请输入兑换码">
+                </div>
+                <div class="aui-button-btn">
+                    <button class="layui-btn layui-btn-disabled">兑换</button>
+                </div>
+            </div>
+            <div class="tab-panel">
+                <div class="tab-panel-item tab-active">
+                    <a href="javascript:;" class="aui-flex">
+                        <div class="aui-price-nub">
+                            <div class="aui-digit">
+                                <h2><em>￥</em>10</h2>
+                            </div>
+                            <div class="aui-full">
+                                <p>满10.1元可用</p>
+                            </div>
+                        </div>
+                        <div class="aui-flex-box">
+                            <h2>新用户专享红包</h2>
+                            <h3 id="num1">剩余：---</h3>
+                            <h3 style="margin-top: 20px;">2022.03.10~2023.03.10</h3>
+                            <button id="btn1">50积分</button>
+                        </div>
+                    </a>
+                    <a href="javascript:;" class="aui-flex">
+                        <div class="aui-price-nub">
+                            <div class="aui-digit">
+                                <h2><em>￥</em>10</h2>
+                            </div>
+                            <div class="aui-full">
+                                <p>满10.1元可用</p>
+                            </div>
+                        </div>
+                        <div class="aui-flex-box">
+                            <h2>满10.1立减10元</h2>
+                            <h3 id="num2">剩余：---</h3>
+                            <h3 style="margin-top: 20px;">2022.03.10~2023.03.10</h3>
+                            <button id="btn2">1000积分+￥2</button>
+                        </div>
+                    </a>
+                    <a href="javascript:;" class="aui-flex">
+                        <div class="aui-price-nub">
+                            <div class="aui-digit">
+                                <h2><em>￥</em>15</h2>
+                            </div>
+                            <div class="aui-full">
+                                <p>满40元可用</p>
+                            </div>
+                        </div>
+                        <div class="aui-flex-box">
+                            <h2>满40立减15元</h2>
+                            <h3 id="num3">剩余：---</h3>
+                            <h3 style="margin-top: 20px;">2022.03.10~2023.03.10</h3>
+                            <button id="btn3">2000积分+￥5</button>
+                        </div>
+                    </a>
+                    <a href="javascript:;" class="aui-flex">
+                        <div class="aui-price-nub">
+                            <div class="aui-digit">
+                                <h2><em>￥</em>20</h2>
+                            </div>
+                            <div class="aui-full">
+                                <p>满50元可用</p>
+                            </div>
+                        </div>
+                        <div class="aui-flex-box">
+                            <h2>满50立减20元</h2>
+                            <h3 id="num4">剩余：---</h3>
+                            <h3 style="margin-top: 20px;">2022.03.10~2023.03.10</h3>
+                            <button id="btn4">3000积分+￥8</button>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+</body>
+</html>

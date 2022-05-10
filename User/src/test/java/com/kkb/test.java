@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.xml.crypto.Data;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
@@ -63,13 +64,9 @@ public class test {
 
     @Test
     public void get() {
-        LinkedList list = new LinkedList();
-        list.addFirst(1);
-        list.add(1,5);
-        list.add(1,44);
-        Iterator itr = list.listIterator();
-        while (itr.hasNext()){
-            System.out.println(itr.next());
-        }
+        Timestamp data = new Timestamp(System.currentTimeMillis());
+        System.out.println(data);
+        data.setTime(data.getTime() + 30L *1000*60*60*24);
+        System.out.println(data);
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.mail.Session;
 import javax.servlet.http.HttpSession;
@@ -106,5 +107,15 @@ public class TransportController {
     public ResultVo<Integer> console(Integer id){
         val console = transportService.console(id);
         return new ResultVo<>(console);
+    }
+
+    @RequestMapping(value = "/del",method = RequestMethod.POST)
+    public ResultVo del(Integer id){
+        val del = transportService.del(id);
+        if (del > 0){
+            return new ResultVo<>();
+        } else {
+            return new ResultVo<>(500,"取消订单失败！");
+        }
     }
 }

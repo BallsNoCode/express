@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>留言</title>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/feedback.css">
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/layer/layer.js"></script>
+    <script>
+        $(function () {
+
+            $("#email").blur(function () {
+                var test = /^\w+@[a-z0-9]+.[a-z]{2,4}$/
+                if (!test.test($("#email").val())) {
+                    layer.msg("请输入正确的邮箱地址，以保证能及时收到回复！")
+                }
+            })
+
+            $("#submit").click(function () {
+                var name = $("#name").val();
+                var email = $("#email").val();
+                var message = $("#message").val();
+                $.post("/email/send", {
+                    name: name,
+                    email: email,
+                    message: message
+                }, function (data) {
+                    if (data.code) {
+                        layer.msg("我们已经收到您的合作请求，我们会快速处理的！");
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                    $("#name").val(null);
+                    $("#email").val(null);
+                    $("#message").val(null);
+                })
+            })
+        })
+    </script>
+    <style>
+        #box {
+            position: relative;
+            margin: auto;
+            /*margin-top: 44px;*/
+            width: 92%;
+            height: 44px;
+            line-height: 44px;
+            font-size: 1.1rem;
+            text-align: center;
+            color: #fff;
+            background-color: #07bdaf;
+            border-radius: 4px;
+        }
+
+        #file_input {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+
+<section id="contact-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 offset-lg-1">
+                <div class="contact-box text-center">
+                    <form id="contact" action="" method="post">
+                        <div class="form-group row">
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control" id="name" placeholder="姓名*"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" id="company"
+                                   placeholder="公司名称*">
+                        </div>
+                        <div class="file-box" id="box">
+                            <input id="file_input" class="import-btn" type="file">营业执照*
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" id="email" name="email"
+                                   placeholder="Email">
+                        </div>
+                        <div class="form-group">
+									<textarea class="form-control" id="message" name="message" rows="10"
+                                              placeholder="公司介绍*" required></textarea>
+                        </div>
+                        <button type="button" id="submit">提 交</button>
+                        <div id="form-messages"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+
+</html>

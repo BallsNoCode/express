@@ -8,6 +8,15 @@
 			content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../css/mui.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<script src="../js/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript">
+			$(function () {
+				$.getJSON("/balance/info", null, function (data) {
+					let obj = data.obj;
+					$("#integral").html(obj.integral);
+				});
+			});
+		</script>
 	</head>
 
 	<body>
@@ -19,7 +28,7 @@
 			<div class="mui-row">
 				<div class="mui-col-xs-12">
 					我的积分
-					<h1>298</h1>
+					<h1 id="integral">298</h1>
 				</div>
 			</div>
 			<img src="../images/int_bg.jpg" alt="" class="mui-slider" />

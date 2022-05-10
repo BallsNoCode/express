@@ -22,7 +22,7 @@
     <div class="mui-row option my_3">
         <div class="mui-col-xs-3 " style="margin-top: 20px;">
             <span></span>
-            <p>待付款</p>
+            <p>待发货</p>
         </div>
         <div class="mui-col-xs-3 " style="margin-top: 20px;">
             <span></span>
@@ -83,6 +83,7 @@
     });
 </script>
 <script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="../js/layer/layer.js"></script>
 <script type="text/javascript">
     $(function () {
         $(".spbox:gt(0)").hide();
@@ -128,7 +129,7 @@
                             '\t\t\t\t\t\t\t\t</div>\n' +
                             '\t\t\t\t\t\t\t</a>\n' +
                             '\t\t\t\t\t\t\t<div class="mui-col-xs-12 i_total">共<span>1</span>件快递，合计￥：<span>' + list[i].tcost + '.00</span></div>\n' +
-                            '\t\t\t\t\t\t\t<div class="mui-col-xs-12"><button onclick="del()">取消订单</button><button onclick="location.href = \'../account.html?cost=' + list[i].tcost + '\'">立即支付</button></div>\n' +
+                            '\t\t\t\t\t\t\t<div class="mui-col-xs-12"><button onclick="del('+list[i].tid+')">取消订单</button></div>\n' +
                             '\t\t\t\t\t\t</li>'
                         $("#state0").append(item);
                     } else if (list[i].tstate === 1) {
@@ -142,7 +143,7 @@
                             '\t\t\t\t\t\t\t\t</div>\n' +
                             '\t\t\t\t\t\t\t</a>\n' +
                             '\t\t\t\t\t\t\t<div class="mui-col-xs-12 i_total">共<span>1</span>件快递，合计￥：<span>' + list[i].tcost + '.00</span></div>\n' +
-                            '\t\t\t\t\t\t\t<div class="mui-col-xs-12"><button onclick="location.href = \'../expressInfo.html?table=2&num=' + list[i].tnumber + '\'">查看物流</button></div>\n' +
+                            '\t\t\t\t\t\t\t<div class="mui-col-xs-12"><button onclick="location.href = \'../expressInfo.html?table=1&num=' + list[i].tnumber + '\'">查看物流</button></div>\n' +
                             '\t\t\t\t\t\t</li>'
                         $("#state1").append(item);
                     } else if (list[i].tstate === 2) {
@@ -156,7 +157,7 @@
                             '\t\t\t\t\t\t\t\t</div>\n' +
                             '\t\t\t\t\t\t\t</a>\n' +
                             '\t\t\t\t\t\t\t<div class="mui-col-xs-12 i_total">共<span>1</span>件快递，合计￥：<span>' + list[i].tcost + '.00</span></div>\n' +
-                            '\t\t\t\t\t\t\t<div class="mui-col-xs-12"><button>留言评价</button><button>申请售后</button></div>\n' +
+                            '\t\t\t\t\t\t\t<div class="mui-col-xs-12"><button onclick="location.href=\'feedback.html\'">留言评价</button><button>申请售后</button></div>\n' +
                             '\t\t\t\t\t\t</li>\n'
                         $("#state2").append(item);
                     } else if (list[i].tstate === 3) {
@@ -179,9 +180,15 @@
         });
     });
 
-    function del() {
+    function del(id) {
         if (confirm("是否取消订单")) {
-
+            $.post("/transport/del",{id:id},function (data) {
+                if (data.code === 200){
+                    layer.msg("取消成功，稍后会进行退款！")
+                } else {
+                    layer.confirm(data.msg)
+                }
+            })
         }
     }
 </script>

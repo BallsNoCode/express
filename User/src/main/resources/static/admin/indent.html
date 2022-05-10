@@ -5,10 +5,10 @@
 	<meta charset="UTF-8">
 	<title>我的订单</title>
 	<meta name="viewport"
-		  content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-	<link href="../css/mui.css" rel="stylesheet" />
-	<link rel="stylesheet" type="text/css" href="../css/style.css" />
-	<link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
+		  content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+	<link href="../css/mui.css" rel="stylesheet"/>
+	<link rel="stylesheet" type="text/css" href="../css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/iconfont.css"/>
 
 </head>
 
@@ -22,7 +22,7 @@
 	<div class="mui-row option my_3">
 		<div class="mui-col-xs-3 " style="margin-top: 20px;">
 			<span></span>
-			<p>待付款</p>
+			<p>待发货</p>
 		</div>
 		<div class="mui-col-xs-3 " style="margin-top: 20px;">
 			<span></span>
@@ -73,7 +73,7 @@
 <script src="../js/mui.min.js"></script>
 <script type="text/javascript">
 	mui.init();
-	mui('body').on('tap', 'a', function() {
+	mui('body').on('tap', 'a', function () {
 		document.location.href = this.href;
 	});
 	//获得slider插件对象
@@ -83,13 +83,14 @@
 	});
 </script>
 <script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="../js/layer/layer.js"></script>
 <script type="text/javascript">
-	$(function() {
+	$(function () {
 		$(".spbox:gt(0)").hide();
 
 		var hd = $(".option div");
 
-		hd.click(function() {
+		hd.click(function () {
 
 			$(this).addClass("s_Add")
 
@@ -104,48 +105,48 @@
 </script>
 <script>
 
-	$(function (){
+	$(function () {
 		$("#state0").html(null);
 		$("#state1").html(null);
 		$("#state2").html(null);
 		$("#state3").html(null);
 		var item = "";
 		$.ajax({
-			type:"GET",
-			url:"/transport/list",
-			dataType:"json",
+			type: "GET",
+			url: "/transport/list",
+			dataType: "json",
 			success(data) {
 				var list = data.list;
-				for(var i = 0; i <list.length; i++){
-					if (list[i].tstate === 0 ) {
-						item = '<li class="mui-table-view-cell mui-media">\n' +
-								'\t\t\t\t\t\t\t<a href="">\n' +
-								'\t\t\t\t\t\t\t\t<img class="mui-media-object mui-pull-left" src="images/sf.png">\n' +
-								'\t\t\t\t\t\t\t\t<div class="mui-media-body">\n' +
-								'\t\t\t\t\t\t\t\t\t<span>'+list[i].tnumber+'</span>\n' +
-								'\t\t\t\t\t\t\t\t\t<p class=\'mui-ellipsis\'>2&nbsp<span>kg</span>\n' +
-								'\t\t\t\t\t\t\t\t\t</p>\n' +
-								'\t\t\t\t\t\t\t\t</div>\n' +
-								'\t\t\t\t\t\t\t</a>\n' +
-								'\t\t\t\t\t\t\t<div class="mui-col-xs-12 i_total">共<span>1</span>件快递，合计￥：<span>'+list[i].tcost+'.00b</span></div>\n' +
-								'\t\t\t\t\t\t\t<div class="mui-col-xs-12"><button onclick="del()">取消订单</button><button onclick="location.href = \'../account.html\'">立即支付</button></div>\n' +
-								'\t\t\t\t\t\t</li>'
-						$("#state0").append(item);
-					} else if(list[i].tstate===1){
+				for (var i = 0; i < list.length; i++) {
+					if (list[i].tstate === 0) {
 						item = '<li class="mui-table-view-cell mui-media">\n' +
 								'\t\t\t\t\t\t\t<a href="">\n' +
 								'\t\t\t\t\t\t\t\t<img class="mui-media-object mui-pull-left" src="../images/losePhoto.png">\n' +
 								'\t\t\t\t\t\t\t\t<div class="mui-media-body">\n' +
-								'\t\t\t\t\t\t\t\t\t'+list[i].company+' 已收取快件\n' +
+								'\t\t\t\t\t\t\t\t\t<span>' + list[i].tnumber + '</span>\n' +
 								'\t\t\t\t\t\t\t\t\t<p class=\'mui-ellipsis\'>2&nbsp<span>kg</span>\n' +
 								'\t\t\t\t\t\t\t\t\t</p>\n' +
 								'\t\t\t\t\t\t\t\t</div>\n' +
 								'\t\t\t\t\t\t\t</a>\n' +
-								'\t\t\t\t\t\t\t<div class="mui-col-xs-12 i_total">共<span>1</span>件快递，合计￥：<span>'+list[i].tcost+'.00</span></div>\n' +
-								'\t\t\t\t\t\t\t<div class="mui-col-xs-12"><button onclick="location.href = \'../expressInfo.html?table=2&num='+list[i].tnumber+'\'">查看物流</button></div>\n' +
+								'\t\t\t\t\t\t\t<div class="mui-col-xs-12 i_total">共<span>1</span>件快递，合计￥：<span>' + list[i].tcost + '.00</span></div>\n' +
+								'\t\t\t\t\t\t\t<div class="mui-col-xs-12"><button onclick="del('+list[i].tid+')">取消订单</button></div>\n' +
+								'\t\t\t\t\t\t</li>'
+						$("#state0").append(item);
+					} else if (list[i].tstate === 1) {
+						item = '<li class="mui-table-view-cell mui-media">\n' +
+								'\t\t\t\t\t\t\t<a href="">\n' +
+								'\t\t\t\t\t\t\t\t<img class="mui-media-object mui-pull-left" src="../images/losePhoto.png">\n' +
+								'\t\t\t\t\t\t\t\t<div class="mui-media-body">\n' +
+								'\t\t\t\t\t\t\t\t\t' + list[i].company + ' 已收取快件\n' +
+								'\t\t\t\t\t\t\t\t\t<p class=\'mui-ellipsis\'>2&nbsp<span>kg</span>\n' +
+								'\t\t\t\t\t\t\t\t\t</p>\n' +
+								'\t\t\t\t\t\t\t\t</div>\n' +
+								'\t\t\t\t\t\t\t</a>\n' +
+								'\t\t\t\t\t\t\t<div class="mui-col-xs-12 i_total">共<span>1</span>件快递，合计￥：<span>' + list[i].tcost + '.00</span></div>\n' +
+								'\t\t\t\t\t\t\t<div class="mui-col-xs-12"><button onclick="location.href = \'../expressInfo.html?table=1&num=' + list[i].tnumber + '\'">查看物流</button></div>\n' +
 								'\t\t\t\t\t\t</li>'
 						$("#state1").append(item);
-					}else if (list[i].tstate ===2){
+					} else if (list[i].tstate === 2) {
 						item = '<li class="mui-table-view-cell mui-media">\n' +
 								'\t\t\t\t\t\t\t<a href="">\n' +
 								'\t\t\t\t\t\t\t\t<img class="mui-media-object mui-pull-left" src="../images/jd.png">\n' +
@@ -155,12 +156,12 @@
 								'\t\t\t\t\t\t\t\t\t</p>\n' +
 								'\t\t\t\t\t\t\t\t</div>\n' +
 								'\t\t\t\t\t\t\t</a>\n' +
-								'\t\t\t\t\t\t\t<div class="mui-col-xs-12 i_total">共<span>1</span>件快递，合计￥：<span>'+list[i].tcost+'.00</span></div>\n' +
-								'\t\t\t\t\t\t\t<div class="mui-col-xs-12"><button>留言评价</button><button>申请售后</button></div>\n' +
+								'\t\t\t\t\t\t\t<div class="mui-col-xs-12 i_total">共<span>1</span>件快递，合计￥：<span>' + list[i].tcost + '.00</span></div>\n' +
+								'\t\t\t\t\t\t\t<div class="mui-col-xs-12"><button onclick="location.href=\'feedback.html\'">留言评价</button><button>申请售后</button></div>\n' +
 								'\t\t\t\t\t\t</li>\n'
 						$("#state2").append(item);
-					}else if (list[i].tstate ===3){
-						item = 	'<li class="mui-table-view-cell mui-media">\n' +
+					} else if (list[i].tstate === 3) {
+						item = '<li class="mui-table-view-cell mui-media">\n' +
 								'\t\t\t\t\t\t\t<a href="">\n' +
 								'\t\t\t\t\t\t\t\t<img class="mui-media-object mui-pull-left" src="../images/jd.png">\n' +
 								'\t\t\t\t\t\t\t\t<div class="mui-media-body">\n' +
@@ -169,7 +170,7 @@
 								'\t\t\t\t\t\t\t\t\t</p>\n' +
 								'\t\t\t\t\t\t\t\t</div>\n' +
 								'\t\t\t\t\t\t\t</a>\n' +
-								'\t\t\t\t\t\t\t<div class="mui-col-xs-12 i_total">共<span>1</span>件快递，合计￥：<span>'+list[i].tcost+'.00</span></div>\n' +
+								'\t\t\t\t\t\t\t<div class="mui-col-xs-12 i_total">共<span>1</span>件快递，合计￥：<span>' + list[i].tcost + '.00</span></div>\n' +
 								'\t\t\t\t\t\t\t<div class="mui-col-xs-12"><button>联系客服</button></div>\n' +
 								'\t\t\t\t\t\t</li>'
 						$("#state3").append(item);
@@ -178,9 +179,16 @@
 			}
 		});
 	});
-	function del() {
-		if (confirm("是否取消订单")){
 
+	function del(id) {
+		if (confirm("是否取消订单")) {
+			$.post("/transport/del",{id:id},function (data) {
+				if (data.code === 200){
+					layer.msg("取消成功，稍后会进行退款！")
+				} else {
+					layer.confirm(data.msg)
+				}
+			})
 		}
 	}
 </script>

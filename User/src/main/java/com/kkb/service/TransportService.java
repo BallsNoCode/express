@@ -73,14 +73,21 @@ public class TransportService {
      * @param id: 快递id
      * @return: java.lang.Integer
      **/
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public Integer updateIsPay(Integer id){
         val transport = transportMapper.selectByPrimaryKey(id);
         transport.setTIspay(1L);
         return transportMapper.updateByPrimaryKeySelective(transport);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+    public Integer del(Integer id){
+        return transportMapper.deleteByPrimaryKey(id);
+    }
 
 
+
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
     public List<Integer> console(Integer id){
         Example example = new Example(Transport.class);
         val criteria = example.createCriteria();

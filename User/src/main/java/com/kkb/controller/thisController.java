@@ -31,6 +31,8 @@ public class thisController {
     AddressService addressService;
     @Resource
     EmailService emailService;
+    @Resource
+    VipService vipService;
 
 
 }

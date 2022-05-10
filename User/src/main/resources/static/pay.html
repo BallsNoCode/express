@@ -48,7 +48,7 @@
         $.post("/pay", ret, function (data) {
             layer.close(windowId);
             if (data.code === 200) {
-                $.post("/balance/deduct", {cost: cost,id:id}, function () {
+                $.post("/balance/deduct", {cost: cost}, function () {
                     if (data.code === 200){
                         layer.msg("支付成功！");
                         window.location.href = "ok.html";

@@ -17,6 +17,10 @@
 					let obj = data.obj;
 					$("#name").html(obj.uusername)
 				})
+				$.getJSON("/vip/info",null,function (data) {
+					let obj = data.obj;
+					$("#time").html(obj.time+"到期")
+				})
 			})
 		</script>
 	</head>
@@ -33,7 +37,7 @@
 				<div class="name">
 					<p id="name">lonely</p>
 					<span>升级至尊会员享额外特权</span>
-					<span>2022-05-24到期</span>
+					<span id="time">2022-05-24到期</span>
 				</div>
 			</div>
 			<div class="info">
@@ -41,7 +45,7 @@
 					<p>积分：298</p>
 				</div>
 				<div class="item">
-					<p>优惠券：3</p>
+					<p onclick="location.href='coupon.html'">优惠券：3</p>
 				</div>
 			</div>
 		</div>
@@ -95,7 +99,7 @@
 			</ul>
 			<div class="btn">
 				<button id="pay">立即升级</button>
-				<p>升级得800金币</p>
+				<p>升级得800积分</p>
 			</div>
 		</div>
 		<h5 class="title">会员特权</h5>
@@ -176,7 +180,23 @@
 	$('#pay').click(function() {
 		var type = $('.hycz ul li.active').find('.type').text();
 		var money = $('.hycz ul li.active').find('.money').text();
-		confirm("确定要充值" + type + "会员吗？" + "价值：" + money.substr(1) + "元")
+		let flag = confirm("确定要充值" + type + "会员吗？" + "价值：" + money.substr(1) + "元")
+		if (flag){
+			let day = ''
+			if (type === "12个月"){
+				day = 365;
+			}
+			if (type === "1个月"){
+				day = 30;
+			}
+			$.post("/vip/add",{day:day},function (data) {
+				if (data.code === 200){
+					window.location.href = "../pay.html?cost=" + money.substr(1);
+				} else {
+					layer.msg(data.msg)
+				}
+			})
+		}
 	})
 </script>
 <script src="../js/mui.js"></script>
