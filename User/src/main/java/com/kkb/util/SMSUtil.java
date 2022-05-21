@@ -19,7 +19,7 @@ public class SMSUtil {
 
     public static boolean send(String phoneNumber, String code) {
         //修改发送签名和密钥
-        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAI5tLRtzx9aNpyLUnGZVEe", "moBhiKrgm1GryX6EqZJ1QmaeHaHgq2");
+        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "签名", "密钥");
         IAcsClient client = new DefaultAcsClient(profile);
         CommonRequest request = new CommonRequest();
         request.setSysMethod(MethodType.POST);
@@ -29,7 +29,7 @@ public class SMSUtil {
         request.putQueryParameter("RegionId", "cn-hangzhou");
         request.putQueryParameter("PhoneNumbers", phoneNumber);
         request.putQueryParameter("SignName", "快递e栈");
-        request.putQueryParameter("TemplateCode", "SMS_235812108");
+        request.putQueryParameter("TemplateCode", "模板Code值");
         request.putQueryParameter("TemplateParam", "{\"code\":\"" + code + "\"}");
         try {
             CommonResponse response = client.getCommonResponse(request);
